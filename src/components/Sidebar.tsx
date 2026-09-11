@@ -64,12 +64,20 @@ export const systemNav: NavItemConfig[] = [
 
 export type NavItem = NavItemConfig;
 
-/** Which nav item should light up for a given feed tab */
-export function navIdForTab(tab: FeedTab): string {
-  if (tab === "following") return "home";
-  if (tab === "exclusive") return "subscriptions";
+/** Which nav item should light up for a given feed tab or screen */
+export function navIdForTab(tab: FeedTab | string): string {
+  if (tab === "following" || tab === "foryou" || tab === "home") return "home";
+  if (tab === "messages") return "messages";
+  if (tab === "notifications") return "notifications";
+  if (tab === "bookmarks") return "bookmarks";
+  if (tab === "creators" || tab === "trending" || tab === "search" || tab === "explore") return "creators";
+  if (tab === "exclusive" || tab === "subscriptions") return "subscriptions";
   if (tab === "live") return "live";
-  return "home";
+  if (tab === "vault") return "vault";
+  if (tab === "wallet") return "wallet";
+  if (tab === "help") return "help";
+  if (tab === "settings") return "settings";
+  return tab || "home";
 }
 
 /* ------------------------------------------------------------------ */
@@ -161,7 +169,7 @@ function NavItemButton({ item, active, rail, onClick }: NavItemProps) {
 /* ------------------------------------------------------------------ */
 
 interface SidebarProps {
-  activeTab: FeedTab;
+  activeTab: FeedTab | string;
   onNavigate: (item: NavItemConfig) => void;
   onCreate?: () => void;
   onLogoClick?: () => void;

@@ -1,13 +1,13 @@
-import { Bell, Compass, Crown, Plus, Users } from "lucide-react";
+import { Bell, Compass, Home, MessageCircle, Plus, Users } from "lucide-react";
 import type { FeedTab } from "../data";
 import { ME } from "../data";
 import { cn } from "../utils/cn";
 import { Avatar } from "./Avatar";
 import { Logo } from "./Logo";
-import { navIdForTab, type NavItem } from "./Sidebar";
+import { type NavItem } from "./Sidebar";
 
 interface Props {
-  activeTab: FeedTab;
+  activeTab: FeedTab | string;
   onNavigate: (item: NavItem) => void;
   onCreate: () => void;
   onNotify: (message: string) => void;
@@ -39,67 +39,38 @@ export function MobileTopBar({ onNotify, onLiveClick, isLiveActive }: MobileTopB
                 : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
             )}
           >
-            {/* Animated Radar Beacon Dot */}
-            <span className="relative flex h-2.5 w-2.5 items-center justify-center">
+            <span className="relative flex h-2 w-2 items-center justify-center">
               <span
                 className={cn(
-                  "absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping",
+                  "absolute inline-flex h-full w-full rounded-full opacity-75",
+                  isLiveActive ? "bg-white animate-ping" : "bg-rose animate-ping"
+                )}
+              />
+              <span
+                className={cn(
+                  "relative inline-flex h-1.5 w-1.5 rounded-full",
                   isLiveActive ? "bg-white" : "bg-rose"
                 )}
               />
-              <span
-                className={cn(
-                  "relative inline-flex h-2 w-2 rounded-full ring-1.5",
-                  isLiveActive ? "bg-white ring-rose" : "bg-rose ring-surface"
-                )}
-              />
             </span>
-
-            {/* Label + Dynamic Equalizer Animation */}
-            <div className="flex items-center gap-1">
-              <span
-                className={cn(
-                  "text-[11px] font-extrabold tracking-[0.05em] uppercase",
-                  isLiveActive ? "text-white" : "text-ink group-hover:text-rose transition-colors"
-                )}
-              >
-                Live
-              </span>
-
-              {/* 3 Animated Soundwave/Equalizer Bars */}
-              <div className="flex h-2.5 items-end gap-[1.5px]" aria-hidden="true">
-                <span
-                  className={cn(
-                    "w-[1.8px] rounded-full animate-eq-1",
-                    isLiveActive ? "bg-white" : "bg-rose"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "w-[1.8px] rounded-full animate-eq-2",
-                    isLiveActive ? "bg-white" : "bg-rose"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "w-[1.8px] rounded-full animate-eq-3",
-                    isLiveActive ? "bg-white" : "bg-rose"
-                  )}
-                />
-              </div>
-
-              {/* Count Badge */}
-              <span
-                className={cn(
-                  "flex items-center rounded-full px-1.5 py-0 text-[10px] font-bold",
-                  isLiveActive
-                    ? "bg-white/25 text-white"
-                    : "bg-rose-soft text-rose"
-                )}
-              >
-                3
-              </span>
-            </div>
+            <span
+              className={cn(
+                "text-[12px] font-semibold tracking-[-0.01em]",
+                isLiveActive ? "text-white" : "text-rose"
+              )}
+            >
+              Live
+            </span>
+            <span
+              className={cn(
+                "ml-0.5 rounded-full px-1.5 py-[1px] text-[10.5px] font-bold tracking-tight",
+                isLiveActive
+                  ? "bg-white/20 text-white"
+                  : "bg-rose-50 text-rose"
+              )}
+            >
+              3
+            </span>
           </button>
 
           {/* Notifications Bell */}
@@ -123,42 +94,69 @@ export function MobileTopBar({ onNotify, onLiveClick, isLiveActive }: MobileTopB
   );
 }
 
-const MOBILE_ITEMS: NavItem[] = [
-  { id: "foryou", label: "Discover", icon: Compass, tab: "foryou" },
-  { id: "following", label: "Following", icon: Users, tab: "following" },
-  { id: "exclusive", label: "Exclusive", icon: Crown, tab: "exclusive" },
-];
+const HOME_ITEM: NavItem = { id: "home", label: "Home", icon: Home, tab: "foryou" };
+const EXPLORE_ITEM: NavItem = { id: "explore", label: "Explore", icon: Compass, tab: "trending" };
+const MESSAGES_ITEM: NavItem = { id: "messages", label: "Messages", icon: MessageCircle, badge: 3 };
+const PROFILE_ITEM: NavItem = { id: "profile", label: "Profile", icon: Users };
 
-/** Floating Capsule Bottom Navigation — Mobile Mode */
+/** Floating Capsule Bottom Navigation — Mobile Mode (Home || Explore || + || Messages || Profile) */
 export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props, "onNotify">) {
-  const [discover, following, exclusive] = MOBILE_ITEMS;
+  const isHomeActive =
+    activeTab === "foryou" ||
+    activeTab === "following" ||
+    activeTab === "exclusive" ||
+    activeTab === "live" ||
+    activeTab === "home";
 
-  const NavPill = ({ item }: { item: NavItem }) => {
-    const active = item.tab ? item.tab === activeTab : item.id === activeTab;
+  const isExploreActive =
+    activeTab === "trending" ||
+    activeTab === "search" ||
+    activeTab === "collections" ||
+    activeTab === "explore";
+
+  const isMessagesActive = activeTab === "messages";
+  const isProfileActive = activeTab === "profile";
+
+  const NavPill = ({
+    item,
+    isActive,
+    badge,
+  }: {
+    item: NavItem;
+    isActive: boolean;
+    badge?: number;
+  }) => {
     const Icon = item.icon;
 
     return (
       <button
         type="button"
         onClick={() => onNavigate(item)}
-        aria-current={active ? "page" : undefined}
+        aria-current={isActive ? "page" : undefined}
         aria-label={item.label}
         className={cn(
-          "group relative flex items-center justify-center transition-all duration-300 ease-out select-none",
-          active
-            ? "h-11 rounded-full bg-ink px-4 text-white shadow-ink"
+          "group relative flex items-center justify-center transition-all duration-300 ease-out select-none shrink-0",
+          isActive
+            ? "h-11 rounded-full bg-ink px-3.5 text-white shadow-ink"
             : "h-11 w-11 rounded-full text-muted hover:bg-paper/80 hover:text-ink active:scale-95"
         )}
       >
-        <Icon
-          className={cn(
-            "transition-transform duration-300",
-            active ? "h-[19px] w-[19px]" : "h-[20px] w-[20px] group-hover:scale-105"
+        <div className="relative flex items-center justify-center">
+          <Icon
+            className={cn(
+              "transition-transform duration-300",
+              isActive ? "h-[19px] w-[19px]" : "h-[20px] w-[20px] group-hover:scale-105"
+            )}
+            strokeWidth={isActive ? 2.3 : 1.9}
+          />
+          {!isActive && badge && (
+            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold text-white ring-2 ring-surface">
+              {badge}
+            </span>
           )}
-          strokeWidth={active ? 2.3 : 1.9}
-        />
-        {active && (
-          <span className="ml-2 text-[13.5px] font-semibold tracking-[-0.01em] whitespace-nowrap animate-fade-in">
+        </div>
+        {isActive && (
+          <span className="ml-2 text-[13px] font-semibold tracking-[-0.01em] whitespace-nowrap animate-fade-in">
             {item.label}
           </span>
         )}
@@ -169,36 +167,49 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
   return (
     <nav
       aria-label="Primary"
-      className="fixed bottom-5 inset-x-0 z-40 mx-auto flex w-fit min-w-[340px] max-w-[calc(100%-2rem)] items-center justify-between rounded-full border border-line/80 bg-surface/90 px-2.5 py-1.5 shadow-[0_16px_40px_-10px_rgba(18,18,24,0.25)] ring-1 ring-white/80 backdrop-blur-2xl md:hidden"
+      className="fixed bottom-4 inset-x-0 z-40 mx-auto flex w-fit min-w-[320px] max-w-[calc(100%-1.5rem)] items-center justify-between rounded-full border border-line/80 bg-surface/90 px-2 py-1.5 shadow-[0_16px_40px_-10px_rgba(18,18,24,0.25)] ring-1 ring-white/80 backdrop-blur-2xl md:hidden"
     >
-      <div className="flex w-full items-center justify-between gap-1.5 sm:gap-2">
-        {/* Discover */}
-        <NavPill item={discover} />
+      <div className="flex w-full items-center justify-between gap-1 sm:gap-2">
+        {/* 1. Home */}
+        <NavPill item={HOME_ITEM} isActive={isHomeActive} />
 
-        {/* Following */}
-        <NavPill item={following} />
+        {/* 2. Explore */}
+        <NavPill item={EXPLORE_ITEM} isActive={isExploreActive} />
 
-        {/* Create Action Button */}
+        {/* 3. Create Action Button */}
         <button
           type="button"
           onClick={onCreate}
-          aria-label="Create new post"
+          aria-label="Create new post or drop"
           className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand text-white shadow-brand transition-all duration-300 hover:bg-brand-deep hover:scale-105 active:scale-95"
         >
           <Plus className="h-5 w-5" strokeWidth={2.4} />
         </button>
 
-        {/* Exclusive */}
-        <NavPill item={exclusive} />
+        {/* 4. Messages */}
+        <NavPill item={MESSAGES_ITEM} isActive={isMessagesActive} badge={3} />
 
-        {/* Profile */}
+        {/* 5. Profile */}
         <button
           type="button"
-          onClick={() => onNavigate({ id: "profile", label: "Profile", icon: Users })}
+          onClick={() => onNavigate(PROFILE_ITEM)}
+          aria-current={isProfileActive ? "page" : undefined}
           aria-label="Profile"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-muted hover:bg-paper/80 hover:text-ink active:scale-95 transition-all duration-300"
+          className={cn(
+            "group relative flex h-11 shrink-0 items-center justify-center transition-all duration-300 ease-out select-none",
+            isProfileActive
+              ? "rounded-full bg-ink px-3 text-white shadow-ink"
+              : "w-11 rounded-full text-muted hover:bg-paper/80 hover:text-ink active:scale-95"
+          )}
         >
-          <Avatar src={ME.avatar} alt={ME.name} size={30} />
+          <div className={cn("rounded-full p-[1.5px]", isProfileActive ? "ring-2 ring-white" : "")}>
+            <Avatar src={ME.avatar} alt={ME.name} size={isProfileActive ? 24 : 28} />
+          </div>
+          {isProfileActive && (
+            <span className="ml-2 text-[13px] font-semibold tracking-[-0.01em] whitespace-nowrap animate-fade-in">
+              Profile
+            </span>
+          )}
         </button>
       </div>
     </nav>

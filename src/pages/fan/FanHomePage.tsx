@@ -121,13 +121,21 @@ export function FanHomePage() {
 
   const handleNavigate = useCallback(
     (item: NavItem) => {
-      if (item.tab) {
+      if (item.id === "messages") {
+        navigate("/messages");
+      } else if (item.id === "home") {
+        changeTab("foryou");
+      } else if (item.id === "explore") {
+        changeTab("trending");
+      } else if (item.id === "profile") {
+        notify("Fan Profile & Wallet settings");
+      } else if (item.tab) {
         changeTab(item.tab);
       } else {
         notify(`${item.label} is coming soon in this preview`);
       }
     },
-    [changeTab, notify],
+    [changeTab, navigate, notify],
   );
 
   const handleCreate = useCallback(() => notify("The composer opens in the full app"), [notify]);
