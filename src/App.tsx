@@ -1,8 +1,20 @@
-import React from 'react';
-import { AppRouter } from './routes/AppRouter';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { MarketingLayout } from "./components/layout/MarketingLayout";
+import { FanHomePage } from "./pages/fan/FanHomePage";
 
-export const App: React.FC = () => {
-  return <AppRouter />;
-};
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public Editorial Luxury Landing Page */}
+        <Route path="/" element={<MarketingLayout />} />
 
-export default App;
+        {/* Pixel-Perfect Fan Discovery Homepage */}
+        <Route path="/app" element={<FanHomePage />} />
+
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

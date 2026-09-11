@@ -1,5 +1,5 @@
 import React from 'react';
-import { Instagram, Twitter, Disc as Discord, Linkedin } from 'lucide-react';
+import { Globe, MessageSquare, Share2 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -22,30 +22,23 @@ export const Footer: React.FC = () => {
               <a
                 href="#"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#111111] border border-[#E0DDD5] hover:bg-[#111111] hover:text-white transition-colors"
-                aria-label="Instagram"
+                aria-label="Website"
               >
-                <Instagram className="w-4 h-4" />
+                <Globe className="w-4 h-4" />
               </a>
               <a
                 href="#"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#111111] border border-[#E0DDD5] hover:bg-[#111111] hover:text-white transition-colors"
-                aria-label="Twitter"
+                aria-label="Community"
               >
-                <Twitter className="w-4 h-4" />
+                <MessageSquare className="w-4 h-4" />
               </a>
               <a
                 href="#"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#111111] border border-[#E0DDD5] hover:bg-[#111111] hover:text-white transition-colors"
-                aria-label="Discord"
+                aria-label="Share"
               >
-                <Discord className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#111111] border border-[#E0DDD5] hover:bg-[#111111] hover:text-white transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
+                <Share2 className="w-4 h-4" />
               </a>
             </div>
           </div>
