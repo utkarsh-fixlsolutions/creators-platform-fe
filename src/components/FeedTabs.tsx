@@ -34,7 +34,6 @@ export const PRIMARY_TABS: TabDef[] = [
 
 /** The fifth circle — "something we can put, like…" */
 export const MORE_OPTIONS: TabDef[] = [
-  { id: "live", label: "Live now", icon: Radio, hint: "Creators streaming right now" },
   { id: "trending", label: "Trending", icon: Flame, hint: "Most loved in the last 24 hours" },
   { id: "collections", label: "Collections", icon: LayoutGrid, hint: "Curated series and packs" },
 ];

@@ -140,7 +140,7 @@ export function PostCard({
         className="relative mx-3 overflow-hidden rounded-[20px] bg-paper-deep sm:mx-4"
         onDoubleClick={handleDoubleTap}
       >
-        <div className="aspect-[4/3] select-none">
+        <div className="aspect-[16/10] max-h-[420px] select-none">
           <img
             src={post.image}
             alt={post.alt}

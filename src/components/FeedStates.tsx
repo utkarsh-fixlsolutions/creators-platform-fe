@@ -1,77 +1,104 @@
-import { Crown, Flame, LayoutGrid, Radio, SearchX, Sparkles } from "lucide-react";
-import type { FeedTab } from "../data";
+import { Radio, SearchX, Sparkles } from "lucide-react";
 import { ME } from "../data";
 import { greeting } from "../utils/format";
+import { cn } from "../utils/cn";
 
-/* ---- Page header ------------------------------------------------------- */
+/* ---- Page header with Live Now Action Button -------------------------- */
 
-export function FeedHeader({ newPosts }: { newPosts: number }) {
+interface FeedHeaderProps {
+  onLiveClick?: () => void;
+  isLiveActive?: boolean;
+}
+
+export function FeedHeader({ onLiveClick, isLiveActive }: FeedHeaderProps) {
   return (
-    <header className="pb-3 pt-6 sm:pt-10 md:pb-1">
+    <header className="pb-3 pt-6 sm:pt-8 md:pb-2">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand">
         {greeting()}, {ME.name.split(" ")[0]}
       </p>
-      <div className="mt-2 flex items-end justify-between gap-4">
-        <h1 className="font-display text-[46px] leading-[0.95] tracking-[-0.015em] text-ink sm:text-[60px]">
-          Discovery <em className="text-brand">feed</em>
+      
+      <div className="mt-1.5 flex items-center justify-between gap-4">
+        <h1 className="font-display text-[38px] leading-[0.95] tracking-[-0.015em] text-ink sm:text-[48px] lg:text-[52px]">
+          Discovery <em className="text-brand not-italic">Feed</em>
         </h1>
-        <p className="hidden shrink-0 items-center gap-2 pb-2 text-[13px] text-muted sm:flex">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand/60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+
+        {/* Highlighted Live Now Button placed in the line of Discovery Feed on right side */}
+        <button
+          type="button"
+          onClick={onLiveClick}
+          aria-pressed={isLiveActive}
+          title={isLiveActive ? "Showing live creators — Click to show all" : "Filter to live creators"}
+          className={cn(
+            "group relative hidden md:flex items-center gap-2.5 rounded-full border py-1.5 pl-2.5 pr-4 shadow-card transition-all duration-300 hover:shadow-card-hover active:scale-95 select-none shrink-0",
+            isLiveActive
+              ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
+              : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
+          )}
+        >
+          {/* Animated Radar Beacon Dot */}
+          <span className="relative flex h-3.5 w-3.5 items-center justify-center">
+            <span
+              className={cn(
+                "absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping",
+                isLiveActive ? "bg-white" : "bg-rose"
+              )}
+            />
+            <span
+              className={cn(
+                "relative inline-flex h-2.5 w-2.5 rounded-full ring-2",
+                isLiveActive ? "bg-white ring-rose" : "bg-rose ring-surface"
+              )}
+            />
           </span>
-          {newPosts} new since your last visit
-        </p>
+
+          {/* Label + Dynamic Animated Equalizer Bars */}
+          <div className="flex items-center gap-2">
+            <span
+              className={cn(
+                "text-[13px] font-bold tracking-[0.05em] uppercase",
+                isLiveActive ? "text-white" : "text-ink group-hover:text-rose transition-colors"
+              )}
+            >
+              Live now
+            </span>
+
+            {/* 3 Animated Soundwave/Equalizer Bars */}
+            <div className="flex h-3.5 items-end gap-0.5" aria-hidden="true">
+              <span
+                className={cn(
+                  "w-[2.5px] rounded-full animate-eq-1",
+                  isLiveActive ? "bg-white" : "bg-rose"
+                )}
+              />
+              <span
+                className={cn(
+                  "w-[2.5px] rounded-full animate-eq-2",
+                  isLiveActive ? "bg-white" : "bg-rose"
+                )}
+              />
+              <span
+                className={cn(
+                  "w-[2.5px] rounded-full animate-eq-3",
+                  isLiveActive ? "bg-white" : "bg-rose"
+                )}
+              />
+            </div>
+
+            {/* Active Count Badge */}
+            <span
+              className={cn(
+                "flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold",
+                isLiveActive
+                  ? "bg-white/25 text-white"
+                  : "bg-rose-soft text-rose"
+              )}
+            >
+              3
+            </span>
+          </div>
+        </button>
       </div>
-      <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-muted">
-        New work from the creators you follow — and the ones you're about to.
-      </p>
     </header>
-  );
-}
-
-/* ---- Contextual intro strip for secondary feeds ------------------------ */
-
-const INTROS: Partial<Record<FeedTab, { icon: typeof Crown; title: string; body: string; tone: string }>> = {
-  exclusive: {
-    icon: Crown,
-    title: "Members‑only drops",
-    body: "Early access, full archives and behind‑the‑scenes from creators you support.",
-    tone: "bg-gold-soft text-gold-deep",
-  },
-  live: {
-    icon: Radio,
-    title: "Live right now",
-    body: "Jump into a stream while it's happening. Replays land in Collections afterwards.",
-    tone: "bg-rose-soft text-live",
-  },
-  trending: {
-    icon: Flame,
-    title: "Trending in the last 24 hours",
-    body: "Ranked by likes, comments and shares across the whole platform.",
-    tone: "bg-brand-soft text-brand",
-  },
-  collections: {
-    icon: LayoutGrid,
-    title: "Collections",
-    body: "Series, lesson packs and archives — curated by the creators themselves.",
-    tone: "bg-paper-deep text-ink",
-  },
-};
-
-export function TabIntro({ tab }: { tab: FeedTab }) {
-  const intro = INTROS[tab];
-  if (!intro) return null;
-  return (
-    <div className="mb-5 flex animate-fade-up items-start gap-3.5 rounded-2xl border border-line bg-surface px-4 py-3.5 shadow-card">
-      <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${intro.tone}`}>
-        <intro.icon className="h-5 w-5" strokeWidth={2} />
-      </span>
-      <div className="min-w-0">
-        <p className="text-[14px] font-semibold tracking-[-0.01em]">{intro.title}</p>
-        <p className="text-[13px] leading-relaxed text-muted">{intro.body}</p>
-      </div>
-    </div>
   );
 }
 

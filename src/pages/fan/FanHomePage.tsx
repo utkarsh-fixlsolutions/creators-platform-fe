@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CREATORS, POSTS, SUGGESTED_IDS, type Creator, type FeedTab, type Post } from "../../data";
 import { FeedTabs } from "../../components/FeedTabs";
-import { EmptyState, EndOfFeed, FeedHeader, TabIntro } from "../../components/FeedStates";
+import { EmptyState, EndOfFeed, FeedHeader } from "../../components/FeedStates";
 import { MobileBottomNav, MobileTopBar } from "../../components/MobileChrome";
 import { PostCard } from "../../components/PostCard";
 import { Reveal } from "../../components/Reveal";
@@ -199,7 +199,11 @@ export function FanHomePage() {
 
   return (
     <div id="top" className="page-glow min-h-screen bg-paper text-ink">
-      <MobileTopBar onNotify={notify} />
+      <MobileTopBar
+        onNotify={notify}
+        onLiveClick={() => changeTab(tab === 'live' ? 'foryou' : 'live')}
+        isLiveActive={tab === 'live'}
+      />
 
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px]">
         
@@ -212,14 +216,17 @@ export function FanHomePage() {
         />
 
         {/* Center Main Feed */}
-        <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-10">
-          <div className="mx-auto w-full max-w-[680px]">
-            <FeedHeader newPosts={12} />
+        <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
+          <div className="mx-auto w-full max-w-[640px]">
+            <FeedHeader
+              onLiveClick={() => changeTab(tab === 'live' ? 'foryou' : 'live')}
+              isLiveActive={tab === 'live'}
+            />
 
             {/* Sticky tab pill */}
             <div
               ref={feedTopRef}
-              className="sticky top-14 z-20 -mx-4 bg-paper/85 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:px-0 md:top-0 md:pt-5"
+              className="sticky top-14 z-20 bg-paper/85 py-3 backdrop-blur-xl md:top-0 md:pt-5"
             >
               <FeedTabs active={tab} onChange={changeTab} query={query} onQueryChange={setQuery} />
             </div>
@@ -232,8 +239,6 @@ export function FanHomePage() {
               aria-live="polite"
               className="pt-3"
             >
-              <TabIntro tab={tab} />
-
               {visiblePosts.length === 0 ? (
                 <EmptyState
                   query={tab === "search" ? query : ""}
