@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F8F6F2;
+  color: #111111;
+  overflow-x: hidden;
+}
+
+/* Custom Luxury Typography Helpers */
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.font-editorial {
+  font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive, sans-serif;
+}
+
+/* Custom Glassmorphism & Borders */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 229, 224, 0.9);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 229, 224, 0.7);
+}
+
+/* Hide scrollbars for carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth Image Loading */
+img {
+  content-visibility: auto;
+}
