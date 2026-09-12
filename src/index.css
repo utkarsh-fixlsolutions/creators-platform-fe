@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — "ink on paper"
+   A warm paper canvas, deep ink text, a ballpoint‑blue brand accent (a nod to
+   the original sketch), gold for members‑only content, rose for likes.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Instrument Serif", "Iowan Old Style", "Times New Roman", Georgia, serif;
+
+  --color-paper: #f6f5f1;
+  --color-paper-deep: #edebe4;
+  --color-surface: #ffffff;
+  --color-line: #e7e5de;
+  --color-line-strong: #d6d3c9;
+
+  --color-ink: #121218;
+  --color-ink-soft: #3b3b46;
+  --color-muted: #6f6f7b;
+  --color-faint: #a4a4ae;
+
+  --color-brand: #2f3be5;
+  --color-brand-deep: #2431c6;
+  --color-brand-soft: #eceefe;
+  --color-brand-ring: #c7cbfa;
+
+  --color-gold: #b8791c;
+  --color-gold-deep: #9a6314;
+  --color-gold-soft: #fbf1dc;
+
+  --color-rose: #e6395c;
+  --color-rose-soft: #fde8ed;
+  --color-live: #e11d48;
+
+  --shadow-card: 0 1px 2px rgba(18, 18, 24, 0.04), 0 10px 28px -14px rgba(18, 18, 24, 0.14);
+  --shadow-card-hover: 0 2px 4px rgba(18, 18, 24, 0.05), 0 22px 44px -18px rgba(18, 18, 24, 0.24);
+  --shadow-pop: 0 14px 44px -14px rgba(18, 18, 24, 0.3), 0 0 0 1px rgba(18, 18, 24, 0.05);
+  --shadow-ink: 0 6px 16px -6px rgba(18, 18, 24, 0.55);
+  --shadow-brand: 0 10px 24px -10px rgba(47, 59, 229, 0.65);
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --animate-fade-up: fade-up 0.55s var(--ease-out-expo) both;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-scale-in: scale-in 0.2s var(--ease-out-expo) both;
+  --animate-pop: pop 0.5s var(--ease-spring);
+  --animate-burst: burst 0.65s ease-out forwards;
+  --animate-heart-big: heart-big 0.9s var(--ease-out-expo) forwards;
+  --animate-pulse-dot: pulse-dot 1.6s ease-in-out infinite;
+  --animate-toast: toast 0.4s var(--ease-out-expo) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-live-glow: live-glow 2.2s ease-in-out infinite;
+  --animate-radar-wave: radar-wave 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-eq-1: eq-1 0.8s ease-in-out infinite alternate;
+  --animate-eq-2: eq-2 0.8s ease-in-out infinite 0.25s alternate;
+  --animate-live-ring: liveRing 1.8s ease-out infinite;
+  --animate-live-ring-slow: liveRing 2.2s ease-out infinite;
+  --animate-live-ring-ticket: liveRing 2.6s ease-out infinite;
+  --animate-chat-in: chatIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes liveRing {
+    0% { transform: scale(1); opacity: 0.7; }
+    75%, 100% { transform: scale(1.9); opacity: 0; }
+  }
+  @keyframes emojiUp {
+    0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    12% { opacity: 1; transform: translate(0, -14px) scale(1.1); }
+    100% { transform: translate(var(--dx, 0px), -330px) scale(1); opacity: 0; }
+  }
+  @keyframes chatIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    35% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  @keyframes burst {
+    0% { transform: scale(0.5); opacity: 0.9; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+  @keyframes heart-big {
+    0% { opacity: 0; transform: scale(0.4); }
+    25% { opacity: 1; transform: scale(1.15); }
+    45% { transform: scale(1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2) translateY(-10px); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
+    70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+  }
+  @keyframes toast {
+    from { opacity: 0; transform: translate(-50%, 12px) scale(0.96); }
+    to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -10px, 0); }
+  }
+  @keyframes live-glow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45), 0 2px 10px rgba(225, 29, 72, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(225, 29, 72, 0), 0 4px 18px rgba(225, 29, 72, 0.35);
+    }
+  }
+  @keyframes radar-wave {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(2.3);
+      opacity: 0;
+    }
+  }
+  @keyframes eq-1 {
+    0% { height: 4px; }
+    100% { height: 14px; }
+  }
+  @keyframes eq-2 {
+    0% { height: 13px; }
+    100% { height: 5px; }
+  }
+  @keyframes eq-3 {
+    0% { height: 6px; }
+    100% { height: 16px; }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper font-sans text-ink;
+    font-feature-settings: "cv11", "ss01", "ss03", "calt";
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-deep);
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  img {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* 2-line folding animated hamburger transition */
+.burger-line {
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.24s ease,
+    width 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Scroll‑reveal: elements start slightly lowered & transparent, then settle. */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.75s var(--ease-out-expo),
+    transform 0.75s var(--ease-out-expo);
+  will-change: opacity, transform;
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Soft top glow behind the page header */
+@utility page-glow {
+  background-image:
+    radial-gradient(900px 520px at 50% -140px, rgba(47, 59, 229, 0.1), transparent 70%),
+    radial-gradient(520px 420px at 92% 40px, rgba(184, 121, 28, 0.07), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Thin, quiet scrollbars for the rails */
+@utility quiet-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
