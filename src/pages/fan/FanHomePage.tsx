@@ -129,10 +129,9 @@ export function FanHomePage() {
         navigate("/live");
       } else if (item.id === "subscriptions") {
         navigate("/subscriptions");
+      } else if (item.id === "explore" || item.id === "creators") {
+        navigate("/explore");
       } else if (item.id === "home") {
-        changeTab("foryou");
-      } else if (item.id === "explore") {
-        changeTab("trending");
       } else if (item.id === "profile") {
         notify("Fan Profile & Wallet settings");
       } else if (item.tab) {

@@ -169,6 +169,8 @@ export function MessagesPage() {
       navigate('/live');
     } else if (item.id === 'subscriptions') {
       navigate('/subscriptions');
+    } else if (item.id === 'explore' || item.id === 'creators') {
+      navigate('/explore');
     } else if (item.tab) {
       navigate('/app');
     } else {
