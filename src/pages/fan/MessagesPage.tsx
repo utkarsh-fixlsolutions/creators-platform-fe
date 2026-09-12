@@ -165,6 +165,10 @@ export function MessagesPage() {
       // already on messages
     } else if (item.id === 'notifications') {
       navigate('/notifications');
+    } else if (item.id === 'live') {
+      navigate('/live');
+    } else if (item.id === 'subscriptions') {
+      navigate('/subscriptions');
     } else if (item.tab) {
       navigate('/app');
     } else {

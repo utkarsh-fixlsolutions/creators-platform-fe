@@ -1,19 +1,19 @@
-import { Bell, Compass, Home, MessageCircle, Plus, Users } from "lucide-react";
+import { Bell, Compass, Crown, Home, MessageCircle, Users } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { FeedTab } from "../data";
 import { ME } from "../data";
 import { cn } from "../utils/cn";
 import { Avatar } from "./Avatar";
 import { Logo } from "./Logo";
 import { type NavItem } from "./Sidebar";
+import { useNotificationStore } from "../store/notificationStore";
 
 interface Props {
   activeTab: FeedTab | string;
   onNavigate: (item: NavItem) => void;
-  onCreate: () => void;
+  onCreate?: () => void;
   onNotify: (message: string) => void;
 }
-
-import { useNotificationStore } from "../store/notificationStore";
 
 interface MobileTopBarProps {
   onNotify: (message: string) => void;
@@ -29,22 +29,44 @@ export function MobileTopBar({
   isLiveActive,
   onNotificationsClick,
 }: MobileTopBarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const unreadCount = useNotificationStore((s) => s.unreadCount());
+
+  const activeLive = isLiveActive ?? location.pathname.startsWith("/live");
+
+  const handleLiveNav = () => {
+    if (onLiveClick) {
+      onLiveClick();
+    } else {
+      navigate("/live");
+    }
+  };
+
+  const handleNotificationNav = () => {
+    if (onNotificationsClick) {
+      onNotificationsClick();
+    } else {
+      navigate("/notifications");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-30 border-b border-line/80 bg-paper/85 backdrop-blur-xl md:hidden">
       <div className="flex h-14 items-center justify-between px-3.5 sm:px-4">
-        <Logo />
+        <div onClick={() => navigate("/")} className="cursor-pointer">
+          <Logo />
+        </div>
         <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Animated Mobile Live Button - placed right to the left of the Notification icon */}
           <button
             type="button"
-            onClick={onLiveClick}
-            aria-pressed={isLiveActive}
-            title={isLiveActive ? "Showing live creators — Click to show all" : "Filter to live creators"}
+            onClick={handleLiveNav}
+            aria-pressed={activeLive}
+            title={activeLive ? "Live creators feed active" : "View live creators"}
             className={cn(
-              "group relative flex h-8 items-center gap-1.5 rounded-full border py-1 pl-2 pr-2.5 shadow-sm transition-all duration-300 hover:shadow-card active:scale-95 select-none shrink-0",
-              isLiveActive
+              "group relative flex h-8 items-center gap-1.5 rounded-full border py-1 pl-2 pr-2.5 shadow-sm transition-all duration-300 hover:shadow-card active:scale-95 select-none shrink-0 cursor-pointer",
+              activeLive
                 ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
                 : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
             )}
@@ -53,20 +75,20 @@ export function MobileTopBar({
               <span
                 className={cn(
                   "absolute inline-flex h-full w-full rounded-full opacity-75",
-                  isLiveActive ? "bg-white animate-ping" : "bg-rose animate-ping"
+                  activeLive ? "bg-white animate-ping" : "bg-rose animate-ping"
                 )}
               />
               <span
                 className={cn(
                   "relative inline-flex h-1.5 w-1.5 rounded-full",
-                  isLiveActive ? "bg-white" : "bg-rose"
+                  activeLive ? "bg-white" : "bg-rose"
                 )}
               />
             </span>
             <span
               className={cn(
                 "text-[12px] font-semibold tracking-[-0.01em]",
-                isLiveActive ? "text-white" : "text-rose"
+                activeLive ? "text-white" : "text-rose"
               )}
             >
               Live
@@ -74,7 +96,7 @@ export function MobileTopBar({
             <span
               className={cn(
                 "ml-0.5 rounded-full px-1.5 py-[1px] text-[10.5px] font-bold tracking-tight",
-                isLiveActive
+                activeLive
                   ? "bg-white/20 text-white"
                   : "bg-rose-50 text-rose"
               )}
@@ -87,7 +109,7 @@ export function MobileTopBar({
           <button
             type="button"
             aria-label="Notifications"
-            onClick={onNotificationsClick || (() => onNotify("Notifications"))}
+            onClick={handleNotificationNav}
             className="relative grid h-9 w-9 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface cursor-pointer"
           >
             <Bell className="h-[20px] w-[20px]" strokeWidth={1.9} />
@@ -110,11 +132,12 @@ export function MobileTopBar({
 
 const HOME_ITEM: NavItem = { id: "home", label: "Home", icon: Home, tab: "foryou" };
 const EXPLORE_ITEM: NavItem = { id: "explore", label: "Explore", icon: Compass, tab: "trending" };
+const SUBSCRIPTIONS_ITEM: NavItem = { id: "subscriptions", label: "Subs", icon: Crown, badge: 2 };
 const MESSAGES_ITEM: NavItem = { id: "messages", label: "Messages", icon: MessageCircle, badge: 3 };
 const PROFILE_ITEM: NavItem = { id: "profile", label: "Profile", icon: Users };
 
-/** Floating Capsule Bottom Navigation — Mobile Mode (Home || Explore || + || Messages || Profile) */
-export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props, "onNotify">) {
+/** Floating Capsule Bottom Navigation — Mobile Mode (Home || Explore || Subs || Messages || Profile) */
+export function MobileBottomNav({ activeTab, onNavigate }: Omit<Props, "onNotify">) {
   const isHomeActive =
     activeTab === "foryou" ||
     activeTab === "following" ||
@@ -128,6 +151,7 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
     activeTab === "collections" ||
     activeTab === "explore";
 
+  const isSubsActive = activeTab === "subscriptions";
   const isMessagesActive = activeTab === "messages";
   const isProfileActive = activeTab === "profile";
 
@@ -135,10 +159,12 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
     item,
     isActive,
     badge,
+    badgeColor = "bg-brand",
   }: {
     item: NavItem;
     isActive: boolean;
     badge?: number;
+    badgeColor?: string;
   }) => {
     const Icon = item.icon;
 
@@ -149,7 +175,7 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
         aria-current={isActive ? "page" : undefined}
         aria-label={item.label}
         className={cn(
-          "group relative flex items-center justify-center transition-all duration-300 ease-out select-none shrink-0",
+          "group relative flex items-center justify-center transition-all duration-300 ease-out select-none shrink-0 cursor-pointer",
           isActive
             ? "h-11 rounded-full bg-ink px-3.5 text-white shadow-ink"
             : "h-11 w-11 rounded-full text-muted hover:bg-paper/80 hover:text-ink active:scale-95"
@@ -163,8 +189,16 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
             )}
             strokeWidth={isActive ? 2.3 : 1.9}
           />
-          {!isActive && badge && (
-            <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold text-white ring-2 ring-surface">
+          {badge !== undefined && (
+            <span
+              className={cn(
+                "absolute flex items-center justify-center rounded-full px-1 text-[9px] font-extrabold text-white ring-2",
+                isActive
+                  ? "-top-2 -right-2 h-3.5 min-w-[14px] bg-rose ring-ink"
+                  : "-top-1.5 -right-1.5 h-4 min-w-[16px] ring-surface",
+                !isActive && badgeColor
+              )}
+            >
               {badge}
             </span>
           )}
@@ -190,18 +224,21 @@ export function MobileBottomNav({ activeTab, onNavigate, onCreate }: Omit<Props,
         {/* 2. Explore */}
         <NavPill item={EXPLORE_ITEM} isActive={isExploreActive} />
 
-        {/* 3. Create Action Button */}
-        <button
-          type="button"
-          onClick={onCreate}
-          aria-label="Create new post or drop"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand text-white shadow-brand transition-all duration-300 hover:bg-brand-deep hover:scale-105 active:scale-95"
-        >
-          <Plus className="h-5 w-5" strokeWidth={2.4} />
-        </button>
+        {/* 3. Subscriptions (Replaces + icon) */}
+        <NavPill
+          item={SUBSCRIPTIONS_ITEM}
+          isActive={isSubsActive}
+          badge={2}
+          badgeColor="bg-rose"
+        />
 
         {/* 4. Messages */}
-        <NavPill item={MESSAGES_ITEM} isActive={isMessagesActive} badge={3} />
+        <NavPill
+          item={MESSAGES_ITEM}
+          isActive={isMessagesActive}
+          badge={3}
+          badgeColor="bg-brand"
+        />
 
         {/* 5. Profile */}
         <button

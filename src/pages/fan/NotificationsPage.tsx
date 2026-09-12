@@ -70,6 +70,10 @@ export function NotificationsPage() {
       navigate("/messages");
     } else if (item.id === "notifications") {
       // already here
+    } else if (item.id === "live") {
+      navigate("/live");
+    } else if (item.id === "subscriptions") {
+      navigate("/subscriptions");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -82,6 +86,8 @@ export function NotificationsPage() {
       navigate("/app");
     } else if (item.id === "messages") {
       navigate("/messages");
+    } else if (item.id === "subscriptions") {
+      navigate("/subscriptions");
     } else if (item.id === "profile") {
       notify("Fan Profile & Wallet settings");
     }

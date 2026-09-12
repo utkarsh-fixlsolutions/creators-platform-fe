@@ -631,3 +631,175 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   },
 ];
 
+/* ---------------------------------------------------------------------------
+   Live Streaming Data & Types
+--------------------------------------------------------------------------- */
+
+export type LiveAccess = "free" | "subscribers" | "ticketed";
+
+export interface LiveRoom {
+  id: string;
+  creatorId: string; // resolve name/avatar/verified from CREATORS — do not duplicate
+  title: string;
+  viewers: number;
+  startedAt: string; // ISO — drives the LIVE 42:06 timer
+  access: LiveAccess;
+  ticketPrice?: number; // Coins
+  viewerIsEntitled: boolean; // subscriber, or holds a ticket
+  scheduledFor?: string; // "Starting soon" rows
+  badgeTone?: "live" | "gold" | "ink";
+  badgeText?: string;
+  cats: ("all" | "following" | "subs" | "ticketed")[];
+  coverImage?: string;
+  streamPoster?: string;
+}
+
+export interface LiveChatMessage {
+  id: string;
+  handle: string;
+  avatar?: string;
+  text: string;
+  isSubscriber: boolean;
+  isSystem?: boolean;
+}
+
+const fortyTwoMinsAgo = new Date(Date.now() - 42 * 60 * 1000 - 6 * 1000).toISOString();
+
+export const FEATURED_LIVE_ROOM: LiveRoom = {
+  id: "theo",
+  creatorId: "theo",
+  title: "Night studio session · 42 min in",
+  viewers: 1826,
+  startedAt: fortyTwoMinsAgo,
+  access: "subscribers",
+  ticketPrice: 5,
+  viewerIsEntitled: true,
+  cats: ["all", "following", "subs"],
+  badgeTone: "live",
+  badgeText: "LIVE",
+  coverImage: photo(14807440, 900, 700),
+  streamPoster: photo(14807440, 900, 1600),
+};
+
+export const LIVE_ROOMS: LiveRoom[] = [
+  {
+    id: "noor",
+    creatorId: "noor",
+    title: "Midnight clay, one night only",
+    viewers: 612,
+    startedAt: new Date(Date.now() - 32 * 60 * 1000).toISOString(),
+    access: "free",
+    viewerIsEntitled: true,
+    badgeTone: "live",
+    badgeText: "LIVE",
+    cats: ["all", "following", "subs"],
+    coverImage: photo(35240848, 600, 800),
+    streamPoster: photo(35240848, 900, 1600),
+  },
+  {
+    id: "ines",
+    creatorId: "ines",
+    title: "Anatomy in motion · Live drawing",
+    viewers: 1400,
+    startedAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+    access: "ticketed",
+    ticketPrice: 120,
+    viewerIsEntitled: false,
+    badgeTone: "gold",
+    badgeText: "TICKET",
+    cats: ["all", "ticketed"],
+    coverImage: photo(14587417, 600, 800),
+    streamPoster: photo(14587417, 900, 1600),
+  },
+  {
+    id: "kofi",
+    creatorId: "kofi",
+    title: "Late night synth noodling",
+    viewers: 208,
+    startedAt: new Date(Date.now() - 55 * 60 * 1000).toISOString(),
+    access: "subscribers",
+    ticketPrice: 4,
+    viewerIsEntitled: false,
+    badgeTone: "ink",
+    badgeText: "SUBS",
+    cats: ["all", "following", "subs"],
+    coverImage: photo(7562076, 600, 800),
+    streamPoster: photo(7562076, 900, 1600),
+  },
+  {
+    id: "amara",
+    creatorId: "amara",
+    title: "Draping silk live for Paris line",
+    viewers: 3100,
+    startedAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
+    access: "free",
+    viewerIsEntitled: true,
+    badgeTone: "live",
+    badgeText: "LIVE",
+    cats: ["all", "subs"],
+    coverImage: photo(11701102, 600, 800),
+    streamPoster: photo(11701102, 900, 1600),
+  },
+  {
+    id: "sana",
+    creatorId: "sana",
+    title: "Colour grading Tokyo 4K cut",
+    viewers: 894,
+    startedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+    access: "ticketed",
+    ticketPrice: 80,
+    viewerIsEntitled: false,
+    badgeTone: "gold",
+    badgeText: "TICKET",
+    cats: ["all", "ticketed", "following"],
+    coverImage: photo(3756907, 600, 800),
+    streamPoster: photo(3756907, 900, 1600),
+  },
+  {
+    id: "lucas",
+    creatorId: "lucas",
+    title: "Fermenting test kitchen",
+    viewers: 147,
+    startedAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+    access: "subscribers",
+    ticketPrice: 5,
+    viewerIsEntitled: false,
+    badgeTone: "ink",
+    badgeText: "SUBS",
+    cats: ["all", "subs", "following"],
+    coverImage: photo(33148747, 600, 800),
+    streamPoster: photo(33148747, 900, 1600),
+  },
+];
+
+export const SEED_LIVE_CHAT: LiveChatMessage[] = [
+  {
+    id: "c1",
+    handle: "ayra.k",
+    avatar: photo(9489925, 120, 120),
+    text: "the lighting tonight is unreal",
+    isSubscriber: true,
+  },
+  {
+    id: "c2",
+    handle: "quietstorm",
+    avatar: photo(33148747, 120, 120),
+    text: "side B next? 🙏",
+    isSubscriber: false,
+  },
+  {
+    id: "c3",
+    handle: "t_bhai",
+    avatar: photo(7562076, 120, 120),
+    text: "just tipped — hi from Pune",
+    isSubscriber: true,
+  },
+  {
+    id: "c4",
+    handle: "velvetwire",
+    avatar: photo(3756907, 120, 120),
+    text: "been waiting all week for this",
+    isSubscriber: false,
+  },
+];
+

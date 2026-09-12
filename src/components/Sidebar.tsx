@@ -44,7 +44,7 @@ export const primaryNav: NavItemConfig[] = [
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
   { id: "creators", label: "Creators", icon: Compass },
-  { id: "subscriptions", label: "Subscriptions", icon: Crown, tab: "exclusive" },
+  { id: "subscriptions", label: "Subscriptions", icon: Crown },
   { id: "vault", label: "Vault", icon: Vault },
   { id: "wallet", label: "Wallet", icon: Wallet, action: "wallet" },
 ];

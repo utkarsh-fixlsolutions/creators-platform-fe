@@ -125,6 +125,10 @@ export function FanHomePage() {
         navigate("/messages");
       } else if (item.id === "notifications") {
         navigate("/notifications");
+      } else if (item.id === "live") {
+        navigate("/live");
+      } else if (item.id === "subscriptions") {
+        navigate("/subscriptions");
       } else if (item.id === "home") {
         changeTab("foryou");
       } else if (item.id === "explore") {
@@ -211,8 +215,8 @@ export function FanHomePage() {
     <div id="top" className="page-glow min-h-screen bg-paper text-ink">
       <MobileTopBar
         onNotify={notify}
-        onLiveClick={() => changeTab(tab === 'live' ? 'foryou' : 'live')}
-        isLiveActive={tab === 'live'}
+        onLiveClick={() => navigate("/live")}
+        isLiveActive={false}
         onNotificationsClick={() => navigate("/notifications")}
       />
 
@@ -230,8 +234,8 @@ export function FanHomePage() {
         <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
           <div className="mx-auto w-full max-w-[640px]">
             <FeedHeader
-              onLiveClick={() => changeTab(tab === 'live' ? 'foryou' : 'live')}
-              isLiveActive={tab === 'live'}
+              onLiveClick={() => navigate("/live")}
+              isLiveActive={false}
             />
 
             {/* Sticky tab pill */}
