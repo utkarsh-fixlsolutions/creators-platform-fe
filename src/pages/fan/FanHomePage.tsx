@@ -123,6 +123,8 @@ export function FanHomePage() {
     (item: NavItem) => {
       if (item.id === "messages") {
         navigate("/messages");
+      } else if (item.id === "notifications") {
+        navigate("/notifications");
       } else if (item.id === "home") {
         changeTab("foryou");
       } else if (item.id === "explore") {
@@ -211,6 +213,7 @@ export function FanHomePage() {
         onNotify={notify}
         onLiveClick={() => changeTab(tab === 'live' ? 'foryou' : 'live')}
         isLiveActive={tab === 'live'}
+        onNotificationsClick={() => navigate("/notifications")}
       />
 
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px]">

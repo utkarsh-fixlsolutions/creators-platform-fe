@@ -13,14 +13,24 @@ interface Props {
   onNotify: (message: string) => void;
 }
 
+import { useNotificationStore } from "../store/notificationStore";
+
 interface MobileTopBarProps {
   onNotify: (message: string) => void;
   onLiveClick?: () => void;
   isLiveActive?: boolean;
+  onNotificationsClick?: () => void;
 }
 
 /** Sticky top bar — phones only */
-export function MobileTopBar({ onNotify, onLiveClick, isLiveActive }: MobileTopBarProps) {
+export function MobileTopBar({
+  onNotify,
+  onLiveClick,
+  isLiveActive,
+  onNotificationsClick,
+}: MobileTopBarProps) {
+  const unreadCount = useNotificationStore((s) => s.unreadCount());
+
   return (
     <header className="sticky top-0 z-30 border-b border-line/80 bg-paper/85 backdrop-blur-xl md:hidden">
       <div className="flex h-14 items-center justify-between px-3.5 sm:px-4">
@@ -77,11 +87,15 @@ export function MobileTopBar({ onNotify, onLiveClick, isLiveActive }: MobileTopB
           <button
             type="button"
             aria-label="Notifications"
-            onClick={() => onNotify("You're all caught up")}
-            className="relative grid h-9 w-9 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface"
+            onClick={onNotificationsClick || (() => onNotify("Notifications"))}
+            className="relative grid h-9 w-9 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface cursor-pointer"
           >
             <Bell className="h-[20px] w-[20px]" strokeWidth={1.9} />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose ring-2 ring-paper" />
+            {unreadCount > 0 && (
+              <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold text-white ring-2 ring-paper">
+                {unreadCount}
+              </span>
+            )}
           </button>
 
           {/* Profile Avatar */}

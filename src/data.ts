@@ -381,3 +381,253 @@ export const TRENDING_TAGS = [
 ];
 
 export const SEARCH_SUGGESTIONS = ["#ceramics", "Portra 400", "Lisbon", "kalimba", "#ss26"];
+
+/* ---------------------------------------------------------------------------
+   Notifications Types & Initial Data (spec matching Notifications.dc.html)
+--------------------------------------------------------------------------- */
+
+export type NotificationKind =
+  | "post"
+  | "live"
+  | "message"
+  | "tip"
+  | "follow"
+  | "comment"
+  | "mention"
+  | "verified"
+  | "renewal"
+  | "payout"
+  | "shield"
+  | "security"
+  | "promo";
+
+export type NotificationTone = "brand" | "gold" | "rose" | "ink";
+
+export type NotificationCategory = "follows" | "verified" | "comments";
+
+export interface NotificationItem {
+  id: string;
+  kind: NotificationKind;
+  tone: NotificationTone;
+  day: "today" | "earlier";
+  cat: NotificationCategory[];
+  name: string;
+  creatorId?: string;
+  avatar?: string;
+  verified?: boolean;
+  system?: boolean;
+  text: string;
+  quote?: string;
+  time: string;
+  unread: boolean;
+  pinging?: boolean;
+  media?: string;
+  locked?: boolean;
+  tag?: string;
+  action?: string;
+}
+
+export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: "n1",
+    kind: "post",
+    tone: "gold",
+    day: "today",
+    cat: ["verified"],
+    name: "Noor Adeyemi",
+    creatorId: "noor",
+    avatar: avatar(35240848),
+    verified: true,
+    text: "posted a new exclusive drop — 4 photos, 1 clip",
+    time: "2m",
+    unread: true,
+    media: photo(35240848, 240, 240),
+    locked: true,
+    tag: "Members only",
+  },
+  {
+    id: "n2",
+    kind: "live",
+    tone: "rose",
+    day: "today",
+    cat: ["verified"],
+    name: "Theo Marchetti",
+    creatorId: "theo",
+    avatar: avatar(14807440),
+    verified: true,
+    text: "is live now · 1.2k watching",
+    time: "5m",
+    unread: true,
+    pinging: true,
+    action: "Join",
+  },
+  {
+    id: "n3",
+    kind: "message",
+    tone: "brand",
+    day: "today",
+    cat: ["verified"],
+    name: "Inês Duarte",
+    creatorId: "ines",
+    avatar: avatar(14587417),
+    verified: true,
+    text: "sent you a locked message",
+    time: "12m",
+    unread: true,
+    media: photo(14587417, 240, 240),
+    locked: true,
+    tag: "120 Coins",
+    action: "Unlock",
+  },
+  {
+    id: "n4",
+    kind: "tip",
+    tone: "gold",
+    day: "today",
+    cat: [],
+    name: "Kofi Mensah",
+    creatorId: "kofi",
+    avatar: avatar(7562076),
+    text: "tipped you 250 Coins on “Late tape, side B”",
+    time: "22m",
+    unread: true,
+    tag: "+250",
+  },
+  {
+    id: "n5",
+    kind: "follow",
+    tone: "brand",
+    day: "today",
+    cat: ["follows", "verified"],
+    name: "Amara Osei",
+    creatorId: "amara",
+    avatar: avatar(11701102),
+    verified: true,
+    text: "subscribed to your Gold tier",
+    time: "40m",
+    unread: true,
+    action: "Say hi",
+  },
+  {
+    id: "n6",
+    kind: "comment",
+    tone: "ink",
+    day: "today",
+    cat: ["comments", "verified"],
+    name: "Sana Iqbal",
+    creatorId: "sana",
+    avatar: avatar(3756907),
+    verified: true,
+    text: "replied to your comment",
+    quote: "“the lighting in this set is unreal — how?”",
+    time: "1h",
+    unread: false,
+  },
+  {
+    id: "n7",
+    kind: "mention",
+    tone: "ink",
+    day: "today",
+    cat: ["comments"],
+    name: "Lucas Ferreira",
+    creatorId: "lucas",
+    avatar: avatar(33148747),
+    text: "mentioned you in a comment",
+    quote: "“shot with @maya.makes — she runs the room”",
+    time: "2h",
+    unread: false,
+  },
+  {
+    id: "n8",
+    kind: "follow",
+    tone: "brand",
+    day: "today",
+    cat: ["follows"],
+    name: "Rhea Kapoor",
+    creatorId: "rhea",
+    avatar: avatar(9489925),
+    text: "started following you",
+    time: "3h",
+    unread: false,
+    action: "Follow back",
+  },
+  {
+    id: "n9",
+    kind: "verified",
+    tone: "brand",
+    day: "earlier",
+    cat: [],
+    name: "Trust & Safety",
+    system: true,
+    text: "ID verification approved — your badge is live",
+    time: "Yesterday",
+    unread: true,
+    tag: "Verified",
+  },
+  {
+    id: "n10",
+    kind: "renewal",
+    tone: "ink",
+    day: "earlier",
+    cat: ["verified"],
+    name: "Noor Adeyemi",
+    creatorId: "noor",
+    avatar: avatar(35240848),
+    verified: true,
+    text: "membership renews 18 Sep · 5 Coins/mo",
+    time: "Yesterday",
+    unread: false,
+    action: "Manage",
+  },
+  {
+    id: "n11",
+    kind: "payout",
+    tone: "gold",
+    day: "earlier",
+    cat: [],
+    name: "Payouts",
+    system: true,
+    text: "12,400 Coins paid out to HDFC ••4417",
+    time: "Yesterday",
+    unread: false,
+  },
+  {
+    id: "n12",
+    kind: "shield",
+    tone: "rose",
+    day: "earlier",
+    cat: [],
+    name: "Moderation",
+    system: true,
+    text: "One post is hidden pending review",
+    time: "2d",
+    unread: false,
+    action: "Review",
+  },
+  {
+    id: "n13",
+    kind: "security",
+    tone: "ink",
+    day: "earlier",
+    cat: [],
+    name: "Security",
+    system: true,
+    text: "New login · Chrome on Windows, Mumbai",
+    time: "2d",
+    unread: false,
+  },
+  {
+    id: "n14",
+    kind: "promo",
+    tone: "gold",
+    day: "earlier",
+    cat: [],
+    name: "Your bundle",
+    system: true,
+    text: "20% off 3-month bundle expires tonight",
+    time: "3d",
+    unread: false,
+    tag: "Ends 11:59pm",
+  },
+];
+

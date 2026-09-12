@@ -41,7 +41,7 @@ export interface NavItemConfig {
 export const primaryNav: NavItemConfig[] = [
   { id: "home", label: "Home", icon: Home, tab: "foryou" },
   { id: "messages", label: "Messages", icon: MessageCircle, badge: 3 },
-  { id: "notifications", label: "Notifications", icon: Bell, badge: 12 },
+  { id: "notifications", label: "Notifications", icon: Bell },
   { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
   { id: "creators", label: "Creators", icon: Compass },
   { id: "subscriptions", label: "Subscriptions", icon: Crown, tab: "exclusive" },
@@ -168,6 +168,8 @@ function NavItemButton({ item, active, rail, onClick }: NavItemProps) {
 /*  Sidebar                                                            */
 /* ------------------------------------------------------------------ */
 
+import { useNotificationStore } from "../store/notificationStore";
+
 interface SidebarProps {
   activeTab: FeedTab | string;
   onNavigate: (item: NavItemConfig) => void;
@@ -178,6 +180,14 @@ interface SidebarProps {
 export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
   const activeId = navIdForTab(activeTab);
   const rail = true;
+  const unreadNotifications = useNotificationStore((s) => s.unreadCount());
+
+  const navItems = primaryNav.map((item) => {
+    if (item.id === "notifications") {
+      return { ...item, badge: unreadNotifications > 0 ? unreadNotifications : undefined };
+    }
+    return item;
+  });
 
   const renderGroup = (items: NavItemConfig[]) => (
     <ul className="space-y-0.5">
@@ -210,7 +220,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         {/* Navigation Sections */}
         <nav aria-label="Primary Navigation" className="flex-1 space-y-4">
           {/* Group 1: Primary Navigation */}
-          <div>{renderGroup(primaryNav)}</div>
+          <div>{renderGroup(navItems)}</div>
 
           {/* Group 2: For Fans */}
           <div role="group" aria-label="For fans">

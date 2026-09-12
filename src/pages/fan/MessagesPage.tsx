@@ -163,6 +163,8 @@ export function MessagesPage() {
       navigate('/app');
     } else if (item.id === 'messages') {
       // already on messages
+    } else if (item.id === 'notifications') {
+      navigate('/notifications');
     } else if (item.tab) {
       navigate('/app');
     } else {

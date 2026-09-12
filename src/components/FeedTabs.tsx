@@ -124,7 +124,7 @@ export function FeedTabs({ active, onChange, query, onQueryChange }: FeedTabsPro
 
 /* ------------------------------------------------------------------------- */
 
-interface TabButtonProps {
+export interface TabButtonProps {
   id: string;
   label: string;
   icon: LucideIcon;
@@ -135,7 +135,7 @@ interface TabButtonProps {
   expanded?: boolean;
 }
 
-function TabButton({
+export function TabButton({
   id,
   label,
   icon: Icon,
