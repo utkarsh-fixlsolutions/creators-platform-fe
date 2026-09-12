@@ -1,7 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Bell, CheckCheck, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, Bell, CheckCheck, ChevronRight, SlidersHorizontal, Sparkles } from "lucide-react";
 import { useNotificationStore } from "../../store/notificationStore";
+import { useCreatorStore } from "../../store/creatorStore";
 import { NotificationRow } from "../../components/notifications/NotificationRow";
 import { NotificationTabs, type NotificationTab } from "../../components/notifications/NotificationTabs";
 import { Sidebar, type NavItem } from "../../components/Sidebar";
@@ -157,6 +158,28 @@ export function NotificationsPage() {
                 </div>
               </div>
             </header>
+
+            {/* Mobile Prominent Become a Creator Promo Banner Card */}
+            <div className="pt-2 pb-1 md:hidden">
+              <button
+                type="button"
+                onClick={() => useCreatorStore.getState().openModal()}
+                className="flex w-full items-center gap-3 rounded-2xl bg-ink p-3 text-left text-white shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer select-none"
+              >
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/15 text-white">
+                  <Sparkles className="h-4 w-4" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <span className="block text-[13.5px] font-bold tracking-[-0.01em]">
+                    Become a Creator
+                  </span>
+                  <span className="block text-[11.5px] text-white/60">
+                    Earn from subscriptions, tips &amp; live shows
+                  </span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-white/40 shrink-0" />
+              </button>
+            </div>
 
             {/* Filter Pill Tabs */}
             <div className="sticky top-14 z-20 bg-paper/85 py-2.5 backdrop-blur-xl md:top-0 md:pt-4">

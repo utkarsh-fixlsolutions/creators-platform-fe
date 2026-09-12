@@ -2,6 +2,7 @@ import { Radio, SearchX, Sparkles } from "lucide-react";
 import { ME } from "../data";
 import { greeting } from "../utils/format";
 import { cn } from "../utils/cn";
+import { useCreatorStore } from "../store/creatorStore";
 
 /* ---- Page header with Live Now Action Button -------------------------- */
 
@@ -22,19 +23,30 @@ export function FeedHeader({ onLiveClick, isLiveActive }: FeedHeaderProps) {
           Discovery <em className="text-brand not-italic">Feed</em>
         </h1>
 
-        {/* Highlighted Live Now Button placed in the line of Discovery Feed on right side */}
-        <button
-          type="button"
-          onClick={onLiveClick}
-          aria-pressed={isLiveActive}
-          title={isLiveActive ? "Showing live creators — Click to show all" : "Filter to live creators"}
-          className={cn(
-            "group relative hidden md:flex items-center gap-2.5 rounded-full border py-1.5 pl-2.5 pr-4 shadow-card transition-all duration-300 hover:shadow-card-hover active:scale-95 select-none shrink-0",
-            isLiveActive
-              ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
-              : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
-          )}
-        >
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Become a Creator Action Button */}
+          <button
+            type="button"
+            onClick={() => useCreatorStore.getState().openModal()}
+            className="group relative hidden sm:inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[12px] font-bold text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-95 cursor-pointer select-none"
+          >
+            <Sparkles className="h-3.5 w-3.5 text-gold-deep" />
+            <span>Become a Creator</span>
+          </button>
+
+          {/* Highlighted Live Now Button placed in the line of Discovery Feed on right side */}
+          <button
+            type="button"
+            onClick={onLiveClick}
+            aria-pressed={isLiveActive}
+            title={isLiveActive ? "Showing live creators — Click to show all" : "Filter to live creators"}
+            className={cn(
+              "group relative hidden md:flex items-center gap-2.5 rounded-full border py-1.5 pl-2.5 pr-4 shadow-card transition-all duration-300 hover:shadow-card-hover active:scale-95 select-none shrink-0 cursor-pointer",
+              isLiveActive
+                ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
+                : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
+            )}
+          >
           {/* Animated Radar Beacon Dot */}
           <span className="relative flex h-3.5 w-3.5 items-center justify-center">
             <span
@@ -98,8 +110,9 @@ export function FeedHeader({ onLiveClick, isLiveActive }: FeedHeaderProps) {
           </div>
         </button>
       </div>
-    </header>
-  );
+    </div>
+  </header>
+);
 }
 
 /* ---- Empty state --------------------------------------------------------- */
