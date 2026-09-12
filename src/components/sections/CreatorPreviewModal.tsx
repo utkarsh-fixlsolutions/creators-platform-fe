@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Heart, Instagram, Twitter, Link as LinkIcon, ArrowRight } from 'lucide-react';
+import { X, Heart, Globe, Share2, Link as LinkIcon, ArrowRight } from 'lucide-react';
 import { Creator } from '../../types';
 
 interface CreatorPreviewModalProps {
@@ -108,18 +108,18 @@ export const CreatorPreviewModal: React.FC<CreatorPreviewModalProps> = ({
                   target="_blank"
                   rel="noreferrer"
                   className="w-10 h-10 rounded-full bg-[#F5F2EC] hover:bg-[#EDE8DE] flex items-center justify-center text-[#111111] transition-colors"
-                  title="Instagram"
+                  title="Social Link"
                 >
-                  <Instagram className="w-4 h-4" />
+                  <Globe className="w-4 h-4" />
                 </a>
                 <a
                   href={creator.socials.twitter}
                   target="_blank"
                   rel="noreferrer"
                   className="w-10 h-10 rounded-full bg-[#F5F2EC] hover:bg-[#EDE8DE] flex items-center justify-center text-[#111111] transition-colors"
-                  title="Twitter / X"
+                  title="Share"
                 >
-                  <Twitter className="w-4 h-4" />
+                  <Share2 className="w-4 h-4" />
                 </a>
                 <a
                   href={creator.socials.website}
