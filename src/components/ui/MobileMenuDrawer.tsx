@@ -14,7 +14,6 @@ import {
   MessageCircle,
   Settings,
   Share,
-  UserRoundPlus,
   Vault,
   Wallet,
   Coins,
@@ -57,7 +56,6 @@ const PRIMARY_ITEMS: DrawerMenuItem[] = [
 
 const FANS_ITEMS: DrawerMenuItem[] = [
   { id: "payments", label: "Subscription Payments", icon: CreditCard },
-  { id: "become-creator", label: "Become a Creator", icon: UserRoundPlus, action: "creator" },
   { id: "referral", label: "Invite & Referral", icon: Share },
 ];
 
