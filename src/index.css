@@ -193,6 +193,14 @@
   }
 }
 
+/* 2-line folding animated hamburger transition */
+.burger-line {
+  transition:
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.24s ease,
+    width 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Scroll‑reveal: elements start slightly lowered & transparent, then settle. */
 @utility reveal {
   opacity: 0;

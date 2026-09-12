@@ -94,7 +94,7 @@ export function LiveNowPage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px]">
+      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
         {/* Left Sidebar */}
         <Sidebar
           activeTab="live"

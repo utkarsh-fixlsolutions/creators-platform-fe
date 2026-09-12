@@ -15,6 +15,10 @@ interface Props {
   onNotify: (message: string) => void;
 }
 
+import { useState } from "react";
+import { HamburgerButton } from "./ui/HamburgerButton";
+import { MobileMenuDrawer } from "./ui/MobileMenuDrawer";
+
 interface MobileTopBarProps {
   onNotify: (message: string) => void;
   onLiveClick?: () => void;
@@ -32,6 +36,7 @@ export function MobileTopBar({
   const navigate = useNavigate();
   const location = useLocation();
   const unreadCount = useNotificationStore((s) => s.unreadCount());
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const activeLive = isLiveActive ?? location.pathname.startsWith("/live");
 
@@ -52,81 +57,91 @@ export function MobileTopBar({
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line/80 bg-paper/85 backdrop-blur-xl md:hidden">
-      <div className="flex h-14 items-center justify-between px-3.5 sm:px-4">
-        <div onClick={() => navigate("/")} className="cursor-pointer">
-          <Logo />
-        </div>
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Animated Mobile Live Button - placed right to the left of the Notification icon */}
-          <button
-            type="button"
-            onClick={handleLiveNav}
-            aria-pressed={activeLive}
-            title={activeLive ? "Live creators feed active" : "View live creators"}
-            className={cn(
-              "group relative flex h-8 items-center gap-1.5 rounded-full border py-1 pl-2 pr-2.5 shadow-sm transition-all duration-300 hover:shadow-card active:scale-95 select-none shrink-0 cursor-pointer",
-              activeLive
-                ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
-                : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
-            )}
-          >
-            <span className="relative flex h-2 w-2 items-center justify-center">
-              <span
-                className={cn(
-                  "absolute inline-flex h-full w-full rounded-full opacity-75",
-                  activeLive ? "bg-white animate-ping" : "bg-rose animate-ping"
-                )}
-              />
-              <span
-                className={cn(
-                  "relative inline-flex h-1.5 w-1.5 rounded-full",
-                  activeLive ? "bg-white" : "bg-rose"
-                )}
-              />
-            </span>
-            <span
+    <>
+      <header className="sticky top-0 z-50 border-b border-line/80 bg-paper/90 backdrop-blur-xl md:hidden">
+        <div className="flex h-14 items-center justify-between px-3.5 sm:px-4">
+          <div onClick={() => navigate("/")} className="cursor-pointer">
+            <Logo />
+          </div>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Animated Mobile Live Button - placed right to the left of the Notification icon */}
+            <button
+              type="button"
+              onClick={handleLiveNav}
+              aria-pressed={activeLive}
+              title={activeLive ? "Live creators feed active" : "View live creators"}
               className={cn(
-                "text-[12px] font-semibold tracking-[-0.01em]",
-                activeLive ? "text-white" : "text-rose"
-              )}
-            >
-              Live
-            </span>
-            <span
-              className={cn(
-                "ml-0.5 rounded-full px-1.5 py-[1px] text-[10.5px] font-bold tracking-tight",
+                "group relative flex h-8 items-center gap-1.5 rounded-full border py-1 pl-2 pr-2.5 shadow-sm transition-all duration-300 hover:shadow-card active:scale-95 select-none shrink-0 cursor-pointer",
                 activeLive
-                  ? "bg-white/20 text-white"
-                  : "bg-rose-50 text-rose"
+                  ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
+                  : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
               )}
             >
-              3
-            </span>
-          </button>
-
-          {/* Notifications Bell */}
-          <button
-            type="button"
-            aria-label="Notifications"
-            onClick={handleNotificationNav}
-            className="relative grid h-9 w-9 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface cursor-pointer"
-          >
-            <Bell className="h-[20px] w-[20px]" strokeWidth={1.9} />
-            {unreadCount > 0 && (
-              <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold text-white ring-2 ring-paper">
-                {unreadCount}
+              <span className="relative flex h-2 w-2 items-center justify-center">
+                <span
+                  className={cn(
+                    "absolute inline-flex h-full w-full rounded-full opacity-75",
+                    activeLive ? "bg-white animate-ping" : "bg-rose animate-ping"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "relative inline-flex h-1.5 w-1.5 rounded-full",
+                    activeLive ? "bg-white" : "bg-rose"
+                  )}
+                />
               </span>
-            )}
-          </button>
+              <span
+                className={cn(
+                  "text-[12px] font-semibold tracking-[-0.01em]",
+                  activeLive ? "text-white" : "text-rose"
+                )}
+              >
+                Live
+              </span>
+              <span
+                className={cn(
+                  "ml-0.5 rounded-full px-1.5 py-[1px] text-[10.5px] font-bold tracking-tight",
+                  activeLive
+                    ? "bg-white/20 text-white"
+                    : "bg-rose-50 text-rose"
+                )}
+              >
+                3
+              </span>
+            </button>
 
-          {/* Profile Avatar */}
-          <button type="button" aria-label="Your profile" className="ml-0.5">
-            <Avatar src={ME.avatar} alt={ME.name} size={32} />
-          </button>
+            {/* Notifications Bell */}
+            <button
+              type="button"
+              aria-label="Notifications"
+              onClick={handleNotificationNav}
+              className="relative grid h-9 w-9 place-items-center rounded-full text-ink-soft transition-colors hover:bg-surface cursor-pointer"
+            >
+              <Bell className="h-[20px] w-[20px]" strokeWidth={1.9} />
+              {unreadCount > 0 && (
+                <span className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold text-white ring-2 ring-paper">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+
+            {/* 2-line Animated Folding Hamburger Button */}
+            <HamburgerButton
+              open={menuOpen}
+              onToggle={() => setMenuOpen((o) => !o)}
+            />
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Mobile Navigation Drawer Sheet */}
+      <MobileMenuDrawer
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onNotify={onNotify}
+      />
+    </>
   );
 }
 
