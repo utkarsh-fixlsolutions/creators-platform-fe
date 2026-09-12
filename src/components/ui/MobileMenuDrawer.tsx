@@ -49,7 +49,7 @@ const PRIMARY_ITEMS: DrawerMenuItem[] = [
   { id: "subscriptions", label: "My Subscriptions", icon: Crown, path: "/subscriptions", badge: 2 },
   { id: "live", label: "Live Creators", icon: Eye, path: "/live", live: true },
   { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
-  { id: "creators", label: "Creators Directory", icon: Compass },
+  { id: "creators", label: "Creators Directory", icon: Compass, path: "/explore" },
   { id: "vault", label: "Vault Archive", icon: Vault },
   { id: "wallet", label: "Wallet & Top Up", icon: Wallet, action: "wallet" },
 ];

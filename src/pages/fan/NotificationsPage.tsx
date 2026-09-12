@@ -74,6 +74,8 @@ export function NotificationsPage() {
       navigate("/live");
     } else if (item.id === "subscriptions") {
       navigate("/subscriptions");
+    } else if (item.id === "explore" || item.id === "creators") {
+      navigate("/explore");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -82,8 +84,10 @@ export function NotificationsPage() {
   };
 
   const handleMobileNav = (item: NavItem) => {
-    if (item.id === "home" || item.id === "explore") {
+    if (item.id === "home") {
       navigate("/app");
+    } else if (item.id === "explore") {
+      navigate("/explore");
     } else if (item.id === "messages") {
       navigate("/messages");
     } else if (item.id === "subscriptions") {
