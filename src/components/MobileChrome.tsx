@@ -1,4 +1,4 @@
-import { Bell, Compass, Crown, Home, MessageCircle, Users } from "lucide-react";
+import { Bell, Compass, Crown, Home, MessageCircle, Radio, Users } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { FeedTab } from "../data";
 import { ME } from "../data";
@@ -64,49 +64,40 @@ export function MobileTopBar({
             <Logo />
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Animated Mobile Live Button - placed right to the left of the Notification icon */}
+            {/* Compact Mobile Live Icon Button */}
             <button
               type="button"
               onClick={handleLiveNav}
+              aria-label="Live creators"
               aria-pressed={activeLive}
               title={activeLive ? "Live creators feed active" : "View live creators"}
               className={cn(
-                "group relative flex h-8 items-center gap-1.5 rounded-full border py-1 pl-2 pr-2.5 shadow-sm transition-all duration-300 hover:shadow-card active:scale-95 select-none shrink-0 cursor-pointer",
+                "group relative grid h-9 w-9 place-items-center rounded-full transition-all duration-200 cursor-pointer active:scale-95 select-none",
                 activeLive
-                  ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
-                  : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
+                  ? "bg-rose text-white shadow-pop ring-2 ring-rose/30"
+                  : "text-ink-soft hover:bg-surface hover:text-rose"
               )}
             >
-              <span className="relative flex h-2 w-2 items-center justify-center">
-                <span
-                  className={cn(
-                    "absolute inline-flex h-full w-full rounded-full opacity-75",
-                    activeLive ? "bg-white animate-ping" : "bg-rose animate-ping"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "relative inline-flex h-1.5 w-1.5 rounded-full",
-                    activeLive ? "bg-white" : "bg-rose"
-                  )}
-                />
-              </span>
-              <span
+              <Radio
                 className={cn(
-                  "text-[12px] font-semibold tracking-[-0.01em]",
+                  "h-[20px] w-[20px] transition-transform group-hover:scale-105",
                   activeLive ? "text-white" : "text-rose"
                 )}
-              >
-                Live
-              </span>
+                strokeWidth={2}
+              />
+              {/* Badge: pulsating dot + count 3 */}
               <span
                 className={cn(
-                  "ml-0.5 rounded-full px-1.5 py-[1px] text-[10.5px] font-bold tracking-tight",
+                  "absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9.5px] font-extrabold ring-2 ring-paper",
                   activeLive
-                    ? "bg-white/20 text-white"
-                    : "bg-rose-50 text-rose"
+                    ? "bg-white text-rose"
+                    : "bg-rose text-white"
                 )}
               >
+                <span className="relative mr-0.5 flex h-1.5 w-1.5 items-center justify-center">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-current opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-1 w-1 rounded-full bg-current" />
+                </span>
                 3
               </span>
             </button>
