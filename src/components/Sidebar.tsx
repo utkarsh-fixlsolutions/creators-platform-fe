@@ -15,7 +15,6 @@ import {
   Share,
   Sparkles,
   ChevronRight,
-  UserRoundPlus,
   Vault,
   Wallet,
 } from "lucide-react";
@@ -55,7 +54,6 @@ export const primaryNav: NavItemConfig[] = [
 export const fansNav: NavItemConfig[] = [
   { id: "live", label: "Live Creators", icon: Eye, live: true, tab: "live" },
   { id: "payments", label: "Subscription Payments", icon: CreditCard },
-  { id: "become-creator", label: "Become a Creator", icon: UserRoundPlus, action: "creator" },
   { id: "referral", label: "Referral", icon: Share },
 ];
 
