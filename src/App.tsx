@@ -6,10 +6,12 @@ import { NotificationsPage } from "./pages/fan/NotificationsPage";
 import { LiveNowPage } from "./pages/fan/LiveNowPage";
 import { LiveRoomPage } from "./pages/fan/LiveRoomPage";
 import { SubscriptionsPage } from "./pages/fan/SubscriptionsPage";
+import { BecomeCreatorModal } from "./components/creator/BecomeCreatorModal";
 
 export default function App() {
   return (
     <BrowserRouter>
+      <BecomeCreatorModal />
       <Routes>
         {/* Public Editorial Luxury Landing Page */}
         <Route path="/" element={<MarketingLayout />} />

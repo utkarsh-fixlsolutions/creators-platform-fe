@@ -13,6 +13,8 @@ import {
   MoreHorizontal,
   Settings,
   Share,
+  Sparkles,
+  ChevronRight,
   UserRoundPlus,
   Vault,
   Wallet,
@@ -22,6 +24,7 @@ import { ME } from "../data";
 import { cn } from "../utils/cn";
 import { Avatar } from "./Avatar";
 import { Logo } from "./Logo";
+import { useCreatorStore } from "../store/creatorStore";
 
 /* ------------------------------------------------------------------ */
 /*  Navigation config                                                  */
@@ -237,6 +240,39 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
             {renderGroup(systemNav)}
           </div>
         </nav>
+
+        {/* Prominent Become a Creator Luxury Card CTA */}
+        <div className="my-3 shrink-0">
+          {/* Expanded for Desktop */}
+          <button
+            type="button"
+            onClick={() => useCreatorStore.getState().openModal()}
+            className="group relative hidden w-full items-center gap-2.5 rounded-2xl bg-ink p-3 text-left text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-[0.98] cursor-pointer lg:flex"
+          >
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/15 text-white transition-transform group-hover:scale-105">
+              <Sparkles className="h-4 w-4" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <span className="block text-[13px] font-bold leading-tight tracking-[-0.01em]">
+                Become a Creator
+              </span>
+              <span className="block truncate text-[11px] font-medium text-white/60">
+                Keep 90% of earnings
+              </span>
+            </div>
+            <ChevronRight className="h-4 w-4 text-white/40 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
+          </button>
+
+          {/* Compact Sparkle Button for Tablet Rail */}
+          <button
+            type="button"
+            onClick={() => useCreatorStore.getState().openModal()}
+            title="Become a Creator"
+            className="group relative flex h-10 w-full items-center justify-center rounded-xl bg-ink text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-95 cursor-pointer md:flex lg:hidden"
+          >
+            <Sparkles className="h-5 w-5 transition-transform group-hover:scale-110" />
+          </button>
+        </div>
 
         {/* Bottom User Profile Pill */}
         <div className="shrink-0 border-t border-line pt-3">

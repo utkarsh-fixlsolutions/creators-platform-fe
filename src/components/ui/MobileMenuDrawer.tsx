@@ -24,6 +24,7 @@ import { ME } from "../../data";
 import { Avatar } from "../Avatar";
 import { useWalletStore } from "../../store/walletStore";
 import { useNotificationStore } from "../../store/notificationStore";
+import { useCreatorStore } from "../../store/creatorStore";
 
 interface MobileMenuDrawerProps {
   open: boolean;
@@ -103,7 +104,9 @@ export function MobileMenuDrawer({
 
   const handleItemClick = (item: DrawerMenuItem) => {
     onClose();
-    if (item.path) {
+    if (item.action === "creator" || item.id === "become-creator") {
+      useCreatorStore.getState().openModal();
+    } else if (item.path) {
       navigate(item.path);
     } else if (item.action === "wallet") {
       onNotify?.("Opening Wallet top-up sheet");
