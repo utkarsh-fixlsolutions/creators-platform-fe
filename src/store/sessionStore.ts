@@ -23,19 +23,34 @@ interface SessionState {
   logout: () => void;
 }
 
+export const DEMO_FAN_USER: UserSession = {
+  id: 'usr_demo_fan',
+  phone: '+1 (555) 019-2834',
+  email: 'demo.fan@luxe.is',
+  handle: 'maya.makes',
+  displayName: 'Maya Chen',
+  avatarUrl: 'https://images.pexels.com/photos/9489925/pexels-photo-9489925.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=160&h=160',
+  role: 'fan',
+  activeRole: 'fan',
+  verificationStatus: 'verified',
+  identityStrength: 'verified',
+};
+
+export const DEMO_CREATOR_USER: UserSession = {
+  id: 'usr_demo_creator',
+  phone: '+1 (555) 234-5678',
+  email: 'creator@luxe.is',
+  handle: 'lunarose',
+  displayName: 'Luna Rose',
+  avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+  role: 'creator',
+  activeRole: 'creator',
+  verificationStatus: 'verified',
+  identityStrength: 'verified',
+};
+
 export const useSessionStore = create<SessionState>((set) => ({
-  user: {
-    id: 'usr_demo_01',
-    phone: '+1 (555) 234-5678',
-    email: 'creator@luxe.is',
-    handle: 'lunarose',
-    displayName: 'Luna Rose',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-    role: 'both',
-    activeRole: 'fan',
-    verificationStatus: 'verified',
-    identityStrength: 'verified',
-  },
+  user: DEMO_FAN_USER,
   isAuthenticated: true,
   accessToken: 'demo_jwt_token',
   setUser: (user) => set({ user, isAuthenticated: !!user }),
