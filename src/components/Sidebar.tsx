@@ -430,7 +430,10 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         {/* ========================================================= */}
         <div className="shrink-0 border-t border-line pt-3 w-full">
           {!isCollapsed ? (
-            <div className="flex w-full items-center gap-2.5 rounded-2xl p-2 text-left transition-colors hover:bg-surface group">
+            <div
+              onClick={() => onNavigate({ id: "settings", label: "Settings", icon: Settings })}
+              className="flex w-full items-center gap-2.5 rounded-2xl p-2 text-left transition-all hover:bg-surface group cursor-pointer active:scale-[0.98]"
+            >
               <Avatar src={ME.avatar} alt={ME.name} size={36} />
               <div className="min-w-0 flex-1">
                 <span className="block truncate text-xs font-semibold text-ink">
@@ -442,7 +445,10 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
               </div>
               <button
                 type="button"
-                onClick={() => onNavigate({ id: "settings", label: "Settings", icon: Settings })}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onNavigate({ id: "settings", label: "Settings", icon: Settings });
+                }}
                 aria-label="Account Settings"
                 className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-paper hover:text-ink cursor-pointer"
               >

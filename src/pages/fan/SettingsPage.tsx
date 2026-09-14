@@ -19,6 +19,7 @@ import { RightRail } from "../../components/RightRail";
 import { Toast } from "../../components/Toast";
 import { Reveal } from "../../components/Reveal";
 import { useSessionStore } from "../../store/sessionStore";
+import { useWalletStore } from "../../store/walletStore";
 import { useSubscriptionStore } from "../../store/subscriptionStore";
 import { useSidebarStore } from "../../store/sidebarStore";
 import { CREATORS, SUGGESTED_IDS } from "../../data";
