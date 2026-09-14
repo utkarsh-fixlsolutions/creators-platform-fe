@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BadgeCheck, Crown, Gem, Images, MoreVertical, BellOff, User, Flag } from 'lucide-react';
+import { ArrowLeft, BadgeCheck, Crown, Gem, Images, MoreVertical, BellOff, User, Flag, Info, PanelRight } from 'lucide-react';
 import type { Creator } from '../../data/messagesData';
 import { cn } from '../../utils/cn';
 
@@ -9,6 +9,8 @@ interface Props {
   onTip: () => void;
   onToggleVault: () => void;
   vaultOpen: boolean;
+  profileOpen?: boolean;
+  onToggleProfile?: () => void;
   muted: boolean;
   onToggleMute: () => void;
 }
@@ -19,6 +21,8 @@ export default function ChatHeader({
   onTip,
   onToggleVault,
   vaultOpen,
+  profileOpen,
+  onToggleProfile,
   muted,
   onToggleMute,
 }: Props) {
@@ -34,12 +38,18 @@ export default function ChatHeader({
   }, []);
 
   return (
-    <header className="flex items-center justify-between border-b border-line bg-surface/95 px-4 py-3 backdrop-blur-md md:px-6">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="flex items-center justify-between border-b border-line bg-surface/95 px-4 py-3 backdrop-blur-md md:px-6 shrink-0">
+      <div
+        className="flex items-center gap-3 min-w-0 cursor-pointer group select-none"
+        onClick={onToggleProfile}
+      >
         {/* Back Button (shown until the conversation list has room to sit beside the chat, at lg) */}
         <button
           type="button"
-          onClick={onBack}
+          onClick={(e) => {
+            e.stopPropagation();
+            onBack();
+          }}
           aria-label="Back to messages inbox"
           className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted hover:bg-paper hover:text-ink lg:hidden transition-colors"
         >
@@ -68,7 +78,7 @@ export default function ChatHeader({
         {/* Name, Verified, VIP & Subscription metadata */}
         <div className="min-w-0">
           <div className="flex items-center gap-1.5 truncate">
-            <h2 className="truncate text-[15px] font-semibold text-ink">
+            <h2 className="truncate text-[15px] font-semibold text-ink group-hover:text-brand transition-colors">
               {creator.name}
             </h2>
             {creator.verified && (
@@ -97,26 +107,28 @@ export default function ChatHeader({
         <button
           type="button"
           onClick={onTip}
-          className="flex items-center gap-1.5 rounded-full bg-brand px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-deep hover:shadow-card active:scale-95"
+          className="flex items-center gap-1.5 rounded-full bg-brand px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm transition-all hover:bg-brand-deep hover:shadow-card active:scale-95 cursor-pointer"
         >
           <Gem className="h-3.5 w-3.5 text-amber-300" />
           <span className="hidden sm:inline">Tip</span>
         </button>
 
-        {/* Media Vault Toggle */}
-        <button
-          type="button"
-          onClick={onToggleVault}
-          title="Media Vault"
-          className={cn(
-            'flex h-9 w-9 items-center justify-center rounded-full transition-all',
-            vaultOpen
-              ? 'bg-ink text-white'
-              : 'text-muted hover:bg-paper hover:text-ink active:scale-95'
-          )}
-        >
-          <Images className="h-4 w-4" />
-        </button>
+        {/* Creator Profile / Details Panel Toggle Button */}
+        {onToggleProfile && (
+          <button
+            type="button"
+            onClick={onToggleProfile}
+            title={profileOpen ? "Hide Creator Details" : "Show Creator Details"}
+            className={cn(
+              'flex h-9 w-9 items-center justify-center rounded-full transition-all cursor-pointer',
+              profileOpen
+                ? 'bg-ink text-white shadow-xs'
+                : 'text-muted hover:bg-paper hover:text-ink active:scale-95'
+            )}
+          >
+            <PanelRight className="h-4 w-4" />
+          </button>
+        )}
 
         {/* More Actions Menu */}
         <div className="relative" ref={ref}>
@@ -124,7 +136,7 @@ export default function ChatHeader({
             type="button"
             onClick={() => setMenu((m) => !m)}
             aria-label="More options"
-            className="flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-paper hover:text-ink active:scale-95 transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-paper hover:text-ink active:scale-95 transition-colors cursor-pointer"
           >
             <MoreVertical className="h-4 w-4" />
           </button>
@@ -144,6 +156,10 @@ export default function ChatHeader({
               </button>
               <button
                 type="button"
+                onClick={() => {
+                  if (onToggleProfile) onToggleProfile();
+                  setMenu(false);
+                }}
                 className="flex w-full items-center gap-2.5 px-4 py-2 text-xs font-medium text-ink hover:bg-paper transition-colors"
               >
                 <User className="h-4 w-4 text-muted" />

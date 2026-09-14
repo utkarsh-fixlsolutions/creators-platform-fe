@@ -105,10 +105,10 @@ function NavItemButton({ item, active, collapsed, secondary, onClick }: NavItemP
         className={cn(
           "relative flex items-center rounded-xl font-medium tracking-[-0.01em] transition-all duration-200 active:scale-[0.98] cursor-pointer select-none",
           collapsed
-            ? "h-11 w-11 mx-auto justify-center"
+            ? "h-10 w-10 mx-auto justify-center"
             : secondary
-            ? "h-[34px] w-full gap-3 px-3 text-[13px]"
-            : "h-10 w-full gap-3 px-3 text-[14px]",
+            ? "h-[32px] w-full gap-2.5 px-2.5 text-[12.5px]"
+            : "h-9 w-full gap-2.5 px-2.5 text-[13.5px]",
           active
             ? "bg-ink text-white shadow-ink font-semibold"
             : secondary
@@ -132,7 +132,7 @@ function NavItemButton({ item, active, collapsed, secondary, onClick }: NavItemP
           <Icon
             className={cn(
               "transition-transform duration-300 ease-out group-hover:scale-110",
-              secondary && !collapsed ? "h-4 w-4" : "h-5 w-5",
+              secondary && !collapsed ? "h-4 w-4" : "h-[18px] w-[18px]",
               active ? "text-white" : secondary ? "text-muted group-hover:text-ink" : "text-ink-soft group-hover:text-ink",
             )}
             strokeWidth={active ? 2.3 : secondary ? 1.75 : 1.9}
@@ -221,7 +221,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
   });
 
   const renderGroup = (items: NavItemConfig[], secondary = false) => (
-    <ul className={cn("space-y-1", isCollapsed && "space-y-1.5")}>
+    <ul className={cn("space-y-0.5", isCollapsed && "space-y-1")}>
       {items.map((item) => (
         <NavItemButton
           key={item.id}
@@ -244,8 +244,8 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
     >
       <div
         className={cn(
-          "sticky top-0 flex h-screen flex-col border-r border-line bg-paper/70 backdrop-blur-md transition-all duration-300 ease-in-out py-5 overflow-visible",
-          isCollapsed ? "w-[80px] px-2.5 items-center" : "w-[272px] px-4",
+          "sticky top-0 flex h-screen flex-col border-r border-line bg-paper/70 backdrop-blur-md transition-all duration-300 ease-in-out py-3.5 justify-between overflow-hidden",
+          isCollapsed ? "w-[80px] px-2.5 items-center" : "w-[272px] px-3.5",
         )}
       >
         {/* ========================================================= */}
@@ -253,7 +253,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         {/* ========================================================= */}
         <div
           className={cn(
-            "relative mb-5 flex items-center transition-all duration-200",
+            "relative mb-3 flex shrink-0 items-center transition-all duration-200",
             isCollapsed ? "w-full justify-center" : "w-full justify-between px-1",
           )}
           onMouseEnter={() => setHeaderHovered(true)}
@@ -266,7 +266,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
                 type="button"
                 onClick={toggleSidebar}
                 aria-label="Expand sidebar"
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface/90 text-ink shadow-xs border border-line/70 transition-all duration-200 hover:border-ink/30 hover:bg-surface hover:scale-105 active:scale-95 cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-surface/90 text-ink shadow-xs border border-line/70 transition-all duration-200 hover:border-ink/30 hover:bg-surface hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <PanelLeftOpen className="h-5 w-5 stroke-[2] text-ink" />
               </button>
@@ -285,11 +285,11 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
               {/* Brand Logo */}
               <div
                 onClick={onLogoClick}
-                className="flex items-center gap-3 cursor-pointer group select-none"
+                className="flex items-center gap-2.5 cursor-pointer group select-none"
                 title="Back to Home / Landing"
               >
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[14px] bg-ink text-white shadow-ink transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-105">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[12px] bg-ink text-white shadow-ink transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-105">
+                  <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
                     <path
                       d="M12 2c.6 5.4 4.6 9.4 10 10-5.4.6-9.4 4.6-10 10-.6-5.4-4.6-9.4-10-10 5.4-.6 9.4-4.6 10-10Z"
                       fill="currentColor"
@@ -297,10 +297,10 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
                   </svg>
                 </span>
                 <span className="leading-none">
-                  <span className="block text-[17px] font-bold tracking-[-0.02em] text-ink">
+                  <span className="block text-[16px] font-bold tracking-[-0.02em] text-ink">
                     Creators
                   </span>
-                  <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted">
+                  <span className="mt-0.5 block text-[9.5px] font-semibold uppercase tracking-[0.2em] text-muted">
                     Platform
                   </span>
                 </span>
@@ -313,7 +313,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
                   onClick={toggleSidebar}
                   aria-label="Collapse sidebar"
                   className={cn(
-                    "flex h-8 w-8 items-center justify-center rounded-lg border border-line/60 bg-surface/60 text-muted transition-all duration-200 hover:border-ink/20 hover:bg-surface hover:text-ink active:scale-95 cursor-pointer",
+                    "flex h-7.5 w-7.5 items-center justify-center rounded-lg border border-line/60 bg-surface/60 text-muted transition-all duration-200 hover:border-ink/20 hover:bg-surface hover:text-ink active:scale-95 cursor-pointer",
                     headerHovered ? "opacity-100" : "opacity-80",
                   )}
                 >
@@ -333,27 +333,27 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         </div>
 
         {/* ========================================================= */}
-        {/* Navigation Sections                                       */}
+        {/* Navigation Sections (Scrollable flex-1 min-h-0)          */}
         {/* ========================================================= */}
-        <nav aria-label="Primary Navigation" className="flex-1 w-full space-y-3">
+        <nav aria-label="Primary Navigation" className="flex-1 w-full min-h-0 overflow-y-auto no-scrollbar space-y-2 pr-0.5">
           {/* Primary Nav List */}
           <div>{renderGroup(navItems, false)}</div>
 
           {/* Divider */}
-          <div className={cn("h-px bg-line my-2", isCollapsed ? "mx-1" : "mx-2")} />
+          <div className={cn("h-px bg-line my-1.5", isCollapsed ? "mx-1" : "mx-1.5")} />
 
           {/* Expanded secondary navigation */}
           {!isCollapsed && (
             <>
               {/* For Fans Group */}
               <div role="group" aria-label="For fans">
-                <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-faint">
+                <p className="mb-1 px-2.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-faint">
                   For fans
                 </p>
                 {renderGroup(fansNav, true)}
               </div>
 
-              <div className="mx-2 my-2 h-px bg-line" />
+              <div className="mx-1.5 my-1.5 h-px bg-line" />
 
               {/* System & Account */}
               <div>{renderGroup(systemNav, true)}</div>
@@ -362,7 +362,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
 
           {/* Collapsed quick settings */}
           {isCollapsed && (
-            <div className="space-y-1.5 pt-1">
+            <div className="space-y-1 pt-1">
               <NavItemButton
                 item={{ id: "settings", label: "Settings", icon: Settings }}
                 collapsed={true}
@@ -375,28 +375,28 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         </nav>
 
         {/* ========================================================= */}
-        {/* Become a Creator CTA                                      */}
+        {/* Become a Creator CTA (Fixed at Bottom)                    */}
         {/* ========================================================= */}
-        <div className="my-3 shrink-0 w-full">
+        <div className="my-2 shrink-0 w-full">
           {/* Expanded: Sleek Luxury Card */}
           {!isCollapsed && (
             <button
               type="button"
               onClick={() => useCreatorStore.getState().openModal()}
-              className="group relative flex w-full items-center gap-2.5 rounded-2xl bg-ink p-3 text-left text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-[0.98] cursor-pointer"
+              className="group relative flex w-full items-center gap-2.5 rounded-2xl bg-ink p-2.5 text-left text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-[0.98] cursor-pointer"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/15 text-white transition-transform group-hover:scale-105">
-                <Sparkles className="h-4 w-4" />
+              <span className="grid h-7.5 w-7.5 shrink-0 place-items-center rounded-xl bg-white/15 text-white transition-transform group-hover:scale-105">
+                <Sparkles className="h-3.5 w-3.5" />
               </span>
               <div className="min-w-0 flex-1">
-                <span className="block text-[13px] font-bold leading-tight tracking-[-0.01em]">
+                <span className="block text-[12.5px] font-bold leading-tight tracking-[-0.01em]">
                   Become a Creator
                 </span>
-                <span className="block truncate text-[11px] font-medium text-white/60">
+                <span className="block truncate text-[10.5px] font-medium text-white/60">
                   Keep 90% of earnings
                 </span>
               </div>
-              <ChevronRight className="h-4 w-4 text-white/40 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
+              <ChevronRight className="h-3.5 w-3.5 text-white/40 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
             </button>
           )}
 
@@ -407,9 +407,9 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
                 type="button"
                 onClick={() => useCreatorStore.getState().openModal()}
                 aria-label="Become a Creator"
-                className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink text-white shadow-card transition-all duration-200 hover:bg-black hover:scale-105 active:scale-95 cursor-pointer"
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-white shadow-card transition-all duration-200 hover:bg-black hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <Gift className="h-5 w-5 transition-transform group-hover:scale-110" />
+                <Gift className="h-4.5 w-4.5 transition-transform group-hover:scale-110" />
               </button>
 
               {/* Tooltip */}
@@ -426,15 +426,15 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         </div>
 
         {/* ========================================================= */}
-        {/* Bottom User Profile Section                               */}
+        {/* Bottom User Profile Section (Always Visible at Bottom)    */}
         {/* ========================================================= */}
-        <div className="shrink-0 border-t border-line pt-3 w-full">
+        <div className="shrink-0 border-t border-line pt-2.5 w-full">
           {!isCollapsed ? (
             <div
               onClick={() => onNavigate({ id: "settings", label: "Settings", icon: Settings })}
-              className="flex w-full items-center gap-2.5 rounded-2xl p-2 text-left transition-all hover:bg-surface group cursor-pointer active:scale-[0.98]"
+              className="flex w-full items-center gap-2.5 rounded-2xl p-1.5 text-left transition-all hover:bg-surface group cursor-pointer active:scale-[0.98]"
             >
-              <Avatar src={ME.avatar} alt={ME.name} size={36} />
+              <Avatar src={ME.avatar} alt={ME.name} size={34} />
               <div className="min-w-0 flex-1">
                 <span className="block truncate text-xs font-semibold text-ink">
                   {ME.name}
@@ -463,7 +463,7 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
                 aria-label="User Profile & Settings"
                 className="rounded-full transition-transform hover:scale-105 active:scale-95 cursor-pointer"
               >
-                <Avatar src={ME.avatar} alt={ME.name} size={36} />
+                <Avatar src={ME.avatar} alt={ME.name} size={34} />
               </button>
 
               {/* Tooltip */}

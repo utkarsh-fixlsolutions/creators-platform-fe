@@ -5,6 +5,7 @@ import ConversationList from '../../components/messages/ConversationList';
 import ChatHeader from '../../components/messages/ChatHeader';
 import ChatStream from '../../components/messages/ChatStream';
 import MessageComposer from '../../components/messages/MessageComposer';
+import ChatProfilePanel from '../../components/messages/ChatProfilePanel';
 import TipModal from '../../components/messages/TipModal';
 import { Sidebar, type NavItem } from '../../components/Sidebar';
 import { MobileBottomNav, MobileTopBar } from '../../components/MobileChrome';
@@ -33,6 +34,9 @@ export function MessagesPage() {
   const [typing, setTyping] = useState(false);
   const [tipOpen, setTipOpen] = useState(false);
   const [vaultOpen, setVaultOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState<boolean>(() =>
+    typeof window !== 'undefined' && window.innerWidth >= 1280
+  );
   const [muted, setMuted] = useState<Record<string, boolean>>({});
   const [justUnlocked, setJustUnlocked] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
@@ -180,8 +184,11 @@ export function MessagesPage() {
     }
   };
 
-  const vaultMedia =
-    active?.messages.filter((m) => m.type === 'ppv' || m.type === 'image') ?? [];
+  const toggleMute = () => {
+    if (!active) return;
+    setMuted((m) => ({ ...m, [active.id]: !m[active.id] }));
+    notify(muted[active.id] ? 'Notifications unmuted' : 'Notifications muted');
+  };
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-paper text-ink">
@@ -204,7 +211,7 @@ export function MessagesPage() {
         {/* 2A. Conversations Column */}
         <aside
           className={cn(
-            'h-full w-full shrink-0 md:w-[320px] lg:w-[350px] overflow-hidden',
+            'h-full w-full shrink-0 md:w-[300px] lg:w-[330px] xl:w-[340px] overflow-hidden',
             activeId ? 'hidden lg:block' : 'flex-1 md:flex-initial'
           )}
         >
@@ -215,10 +222,10 @@ export function MessagesPage() {
           />
         </aside>
 
-        {/* 2B. Active Chat Arena */}
+        {/* 2B. Active Chat Arena & Creator Info Drawer */}
         <section
           className={cn(
-            'relative h-full min-w-0 flex-1 flex-col bg-surface',
+            'relative h-full min-w-0 flex-1 flex-col bg-surface overflow-hidden',
             activeId ? 'flex' : 'hidden md:flex'
           )}
         >
@@ -229,22 +236,18 @@ export function MessagesPage() {
                 creator={active.creator}
                 onBack={() => setActiveId(null)}
                 onTip={() => setTipOpen(true)}
-                onToggleVault={() => setVaultOpen((v) => !v)}
-                vaultOpen={vaultOpen}
+                onToggleVault={() => setProfileOpen((p) => !p)}
+                vaultOpen={profileOpen}
+                profileOpen={profileOpen}
+                onToggleProfile={() => setProfileOpen((p) => !p)}
                 muted={!!muted[active.id]}
-                onToggleMute={() => {
-                  setMuted((m) => ({ ...m, [active.id]: !m[active.id] }));
-                  notify(
-                    muted[active.id]
-                      ? 'Notifications unmuted'
-                      : 'Notifications muted'
-                  );
-                }}
+                onToggleMute={toggleMute}
               />
 
-              {/* Chat Timeline & Media Vault Drawer */}
+              {/* Chat Timeline & Creator Profile Right Rail */}
               <div className="relative flex min-h-0 flex-1 overflow-hidden">
-                <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+                {/* Center Chat Stream & Message Composer */}
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-paper">
                   <ChatStream
                     key={active.id}
                     conversation={active}
@@ -261,68 +264,37 @@ export function MessagesPage() {
                   />
                 </div>
 
-                {/* Media Vault Slide-in Panel */}
-                {vaultOpen && (
-                  <div className="absolute inset-y-0 right-0 z-20 flex w-full sm:w-80 flex-col border-l border-line bg-surface shadow-float animate-fade-in lg:static lg:shadow-none">
-                    <div className="flex items-center justify-between border-b border-line px-4 py-3.5">
-                      <h3 className="flex items-center gap-2 text-sm font-bold text-ink">
-                        <Images className="h-4 w-4 text-brand" />
-                        <span>Media Vault</span>
-                        <span className="rounded-full bg-paper px-2 py-0.5 text-[11px] font-semibold text-muted">
-                          {vaultMedia.length}
-                        </span>
-                      </h3>
-                      <button
-                        type="button"
-                        onClick={() => setVaultOpen(false)}
-                        className="rounded-full p-1.5 text-muted hover:bg-paper hover:text-ink transition-colors"
-                      >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
+                {/* Desktop Creator Details & Media Right Panel */}
+                <div
+                  className={cn(
+                    'hidden lg:flex h-full shrink-0 overflow-hidden transition-all duration-300 ease-in-out',
+                    profileOpen ? 'w-80 xl:w-[340px]' : 'w-0 border-l-0'
+                  )}
+                >
+                  {profileOpen && (
+                    <ChatProfilePanel
+                      conversation={active}
+                      onClose={() => setProfileOpen(false)}
+                      onTip={() => setTipOpen(true)}
+                      onUnlock={unlock}
+                      muted={!!muted[active.id]}
+                      onToggleMute={toggleMute}
+                    />
+                  )}
+                </div>
 
-                    <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
-                      {vaultMedia.length === 0 ? (
-                        <p className="py-12 text-center text-xs text-muted">
-                          No photos or drops shared in this thread yet.
-                        </p>
-                      ) : (
-                        vaultMedia.map((m) => (
-                          <div
-                            key={m.id}
-                            className="group relative aspect-video overflow-hidden rounded-xl border border-line bg-paper-warm shadow-sm"
-                          >
-                            <img
-                              src={m.mediaUrl}
-                              alt=""
-                              className={cn(
-                                'h-full w-full object-cover transition-transform duration-300 group-hover:scale-105',
-                                m.type === 'ppv' && !m.unlocked ? 'blur-md' : ''
-                              )}
-                            />
-
-                            {m.type === 'ppv' && !m.unlocked ? (
-                              <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/40 p-2 text-center">
-                                <Lock className="h-5 w-5 text-white" />
-                                <span className="mt-1 text-[11px] font-bold text-white">
-                                  💎 {m.coins} coins
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => unlock(m.id)}
-                                  className="mt-1.5 rounded-full bg-brand px-3 py-1 text-[10px] font-bold text-white hover:bg-brand-deep transition-colors"
-                                >
-                                  Unlock
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="absolute bottom-1.5 left-1.5 rounded-md bg-ink/75 px-1.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
-                                {m.mediaLabel || 'Media'}
-                              </div>
-                            )}
-                          </div>
-                        ))
-                      )}
+                {/* Mobile / Tablet Slide-Over Drawer */}
+                {profileOpen && (
+                  <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs lg:hidden animate-fade-in">
+                    <div className="h-full w-full sm:w-80 bg-surface shadow-float">
+                      <ChatProfilePanel
+                        conversation={active}
+                        onClose={() => setProfileOpen(false)}
+                        onTip={() => setTipOpen(true)}
+                        onUnlock={unlock}
+                        muted={!!muted[active.id]}
+                        onToggleMute={toggleMute}
+                      />
                     </div>
                   </div>
                 )}
