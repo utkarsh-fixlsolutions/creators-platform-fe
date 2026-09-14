@@ -236,6 +236,25 @@
   }
 }
 
+/* ---------------------------------------------------------------------------
+   TEMPORARY — wireframe mode
+   Hides stock photography so layout, spacing, and hierarchy can be judged on
+   their own. Keeps every image's box, radius, ring, and shadow intact — only
+   the pixels are swapped for a flat placeholder. Safe to delete any time.
+--------------------------------------------------------------------------- */
+img:not([data-keep-image]) {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-line) 0 10px,
+    var(--color-line-strong) 10px 20px
+  ) !important;
+}
+
+[style*="background-image"] {
+  background-image: none !important;
+  background-color: var(--color-line) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;

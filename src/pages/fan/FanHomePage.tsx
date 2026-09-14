@@ -243,16 +243,19 @@ export function FanHomePage() {
         {/* Center Main Feed */}
         <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
           <div className="mx-auto w-full max-w-[640px]">
-            <FeedHeader
-              onMessagesClick={() => navigate("/messages")}
-              onNotificationsClick={() => navigate("/notifications")}
-              onWalletClick={() => notify(`Wallet Balance: ${useWalletStore.getState().coinsBalance.toLocaleString()} Coins`)}
-            />
+            {/* Desktop-only Feed Header (hidden on mobile to eliminate repetitive notification/messages/coins) */}
+            <div className="hidden md:block">
+              <FeedHeader
+                onMessagesClick={() => navigate("/messages")}
+                onNotificationsClick={() => navigate("/notifications")}
+                onWalletClick={() => notify(`Wallet Balance: ${useWalletStore.getState().coinsBalance.toLocaleString()} Coins`)}
+              />
+            </div>
 
-            {/* Sticky tab pill */}
+            {/* Desktop-only Sticky tab pill (hidden on mobile since bottom navigation notch provides tabs) */}
             <div
               ref={feedTopRef}
-              className="sticky top-14 z-20 bg-paper/85 py-3 backdrop-blur-xl md:top-0 md:pt-5"
+              className="hidden md:block sticky top-0 z-20 bg-paper/85 py-3 md:pt-5 backdrop-blur-xl"
             >
               <FeedTabs active={tab} onChange={changeTab} query={query} onQueryChange={setQuery} />
             </div>
@@ -263,7 +266,7 @@ export function FanHomePage() {
               role="tabpanel"
               aria-labelledby={`tab-${tab}`}
               aria-live="polite"
-              className="pt-3"
+              className="pt-3.5 sm:pt-4 md:pt-3"
             >
               {visiblePosts.length === 0 ? (
                 <EmptyState

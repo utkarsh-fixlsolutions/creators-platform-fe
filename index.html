@@ -19,5 +19,26 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- TEMPORARY — wireframe mode: strips every <img> src so layout can be
+         judged without stock photography. Delete this block to restore images. -->
+    <script>
+      (function () {
+        function stripImages() {
+          document.querySelectorAll("img:not([data-keep-image])").forEach(function (img) {
+            if (img.getAttribute("src")) {
+              img.removeAttribute("src");
+              img.removeAttribute("srcset");
+            }
+          });
+        }
+        stripImages();
+        new MutationObserver(stripImages).observe(document.documentElement, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["src", "srcset"],
+        });
+      })();
+    </script>
   </body>
 </html>
