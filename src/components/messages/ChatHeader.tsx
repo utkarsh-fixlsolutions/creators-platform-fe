@@ -36,12 +36,12 @@ export default function ChatHeader({
   return (
     <header className="flex items-center justify-between border-b border-line bg-surface/95 px-4 py-3 backdrop-blur-md md:px-6">
       <div className="flex items-center gap-3 min-w-0">
-        {/* Back Button (Mobile only) */}
+        {/* Back Button (shown until the conversation list has room to sit beside the chat, at lg) */}
         <button
           type="button"
           onClick={onBack}
           aria-label="Back to messages inbox"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted hover:bg-paper hover:text-ink md:hidden transition-colors"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-muted hover:bg-paper hover:text-ink lg:hidden transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>

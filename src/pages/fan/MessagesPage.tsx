@@ -204,8 +204,8 @@ export function MessagesPage() {
         {/* 2A. Conversations Column */}
         <aside
           className={cn(
-            'h-full w-full shrink-0 md:block md:w-[320px] lg:w-[350px] overflow-hidden',
-            activeId ? 'hidden md:block' : 'flex-1 md:flex-initial'
+            'h-full w-full shrink-0 md:w-[320px] lg:w-[350px] overflow-hidden',
+            activeId ? 'hidden lg:block' : 'flex-1 md:flex-initial'
           )}
         >
           <ConversationList
