@@ -14,9 +14,12 @@ import {
   type ExploreCreator,
 } from "../../data/exploreData";
 import { CREATORS, SUGGESTED_IDS } from "../../data";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
 
 export function ExplorePage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [creators, setCreators] = useState<ExploreCreator[]>(INITIAL_EXPLORE_CREATORS);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -127,7 +130,14 @@ export function ExplorePage() {
       />
 
       {/* Full-width responsive layout matching Fan Home */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         {/* Left Sidebar */}
         <Sidebar
           activeTab="explore"

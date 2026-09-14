@@ -7,12 +7,15 @@ import { PostCard } from "../../components/PostCard";
 import { Reveal } from "../../components/Reveal";
 import { RightRail } from "../../components/RightRail";
 import { Sidebar, type NavItem } from "../../components/Sidebar";
-import { Toast } from "../../components/Toast";
 import { useNavigate } from "react-router-dom";
 import { useWalletStore } from "../../store/walletStore";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
+import { Toast } from "../../components/Toast";
 
 export function FanHomePage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [creators, setCreators] = useState<Creator[]>(CREATORS);
   const [posts, setPosts] = useState<Post[]>(POSTS);
   const [tab, setTab] = useState<FeedTab>("foryou");
@@ -220,7 +223,14 @@ export function FanHomePage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         
         {/* Left Sidebar */}
         <Sidebar

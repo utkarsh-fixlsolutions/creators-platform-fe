@@ -9,9 +9,12 @@ import { MobileBottomNav, MobileTopBar } from "../../components/MobileChrome";
 import { RightRail } from "../../components/RightRail";
 import { Toast } from "../../components/Toast";
 import { Reveal } from "../../components/Reveal";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
 
 export function SubscriptionsPage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -122,7 +125,14 @@ export function SubscriptionsPage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         {/* Left Sidebar */}
         <Sidebar
           activeTab="subscriptions"
