@@ -212,7 +212,7 @@ export function PostCard({
             <span className="grid h-14 w-14 place-items-center rounded-full bg-white/15 ring-1 ring-white/30 backdrop-blur-md">
               <Lock className="h-6 w-6" strokeWidth={1.8} />
             </span>
-            <p className="font-display text-[28px] leading-none sm:text-[32px]">Members only</p>
+            <p className="font-bold text-[24px] tracking-tight leading-none sm:text-[28px]">Members only</p>
             <p className="max-w-[26ch] text-[13px] leading-relaxed text-white/80 sm:text-sm">
               Join {creator.name.split(" ")[0]}'s studio to unlock this post and the full archive.
             </p>

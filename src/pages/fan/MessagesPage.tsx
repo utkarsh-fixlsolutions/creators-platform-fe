@@ -332,7 +332,7 @@ export function MessagesPage() {
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface border border-line shadow-card text-brand mb-4">
                 <Images className="h-7 w-7" />
               </div>
-              <h2 className="font-display text-2xl font-bold text-ink">
+              <h2 className="font-bold text-[20px] tracking-tight text-ink">
                 Your Direct Conversations
               </h2>
               <p className="mt-1 max-w-sm text-sm text-muted">

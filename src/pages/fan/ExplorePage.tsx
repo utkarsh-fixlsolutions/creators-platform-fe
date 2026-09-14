@@ -1,13 +1,14 @@
 import { useMemo, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, SearchX, X } from "lucide-react";
+import { Search, SearchX, X, Users } from "lucide-react";
 import { Sidebar, type NavItem } from "../../components/Sidebar";
 import { MobileBottomNav, MobileTopBar } from "../../components/MobileChrome";
 import { RightRail } from "../../components/RightRail";
 import { Toast } from "../../components/Toast";
 import { Reveal } from "../../components/Reveal";
 import { CategoryPills } from "../../components/explore/CategoryPills";
-import { CreatorMasonryCard } from "../../components/explore/CreatorMasonryCard";
+import { FeaturedCreatorsRow } from "../../components/explore/FeaturedCreatorsRow";
+import { CreatorCard } from "../../components/explore/CreatorCard";
 import {
   INITIAL_EXPLORE_CREATORS,
   type ExploreCreator,
@@ -74,6 +75,11 @@ export function ExplorePage() {
     });
   }, [creators, activeCategory, searchQuery]);
 
+  const handleSelectCreator = (creator: ExploreCreator) => {
+    const cleanHandle = creator.handle.replace(/^@/, "");
+    navigate(`/app/@${cleanHandle}`);
+  };
+
   const handleSidebarNavigate = (item: NavItem) => {
     if (item.id === "home") {
       navigate("/app");
@@ -118,7 +124,7 @@ export function ExplorePage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      {/* Full-width responsive 3-column layout */}
+      {/* Full-width responsive layout matching Fan Home */}
       <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
         {/* Left Sidebar */}
         <Sidebar
@@ -132,13 +138,13 @@ export function ExplorePage() {
         <main className="min-w-0 px-3.5 pb-28 sm:px-6 md:pb-14 lg:px-8">
           <div className="mx-auto w-full max-w-[1020px]">
             {/* Desktop Header */}
-            <div className="hidden md:flex items-center justify-between gap-6 pt-6 pb-4">
+            <div className="hidden md:flex items-center justify-between gap-6 pt-6 pb-5">
               <div>
-                <h1 className="font-display text-[32px] sm:text-[36px] tracking-[-0.015em] text-ink leading-tight">
+                <h1 className="font-bold text-[28px] sm:text-[32px] tracking-tight text-ink leading-tight">
                   Discover creators
                 </h1>
-                <p className="mt-1 text-[13px] text-muted">
-                  {filteredCreators.length}{" "}
+                <p className="mt-1 text-[13.5px] text-muted">
+                  Explore {filteredCreators.length}{" "}
                   {filteredCreators.length === 1 ? "creator" : "creators"} across every category
                 </p>
               </div>
@@ -167,9 +173,9 @@ export function ExplorePage() {
             </div>
 
             {/* Mobile Header Title + Full-Width Search Input */}
-            <div className="flex md:hidden flex-col gap-2.5 pt-4 pb-2">
-              <h1 className="font-display text-[26px] tracking-tight text-ink">
-                Creators
+            <div className="flex md:hidden flex-col gap-2.5 pt-4 pb-3">
+              <h1 className="font-bold text-[24px] tracking-tight text-ink">
+                Discover creators
               </h1>
               <div className="relative flex w-full items-center rounded-full border border-line bg-surface px-3.5 py-2 shadow-xs focus-within:border-brand/60">
                 <Search className="h-4 w-4 shrink-0 text-muted" strokeWidth={2.2} />
@@ -193,16 +199,38 @@ export function ExplorePage() {
               </div>
             </div>
 
-            {/* Category Filter Pills (Sticky Strip) */}
-            <div className="sticky top-14 z-20 bg-paper/85 py-2.5 backdrop-blur-xl md:top-0 md:pt-2">
+            {/* Featured Spotlight Carousel (when no search query is active) */}
+            {!searchQuery && activeCategory === "All" && (
+              <FeaturedCreatorsRow
+                creators={creators}
+                onToggleFollow={handleToggleFollow}
+                onSelectCreator={handleSelectCreator}
+              />
+            )}
+
+            {/* Sticky Category Filter Pills */}
+            <div className="sticky top-14 z-20 bg-paper/90 py-2.5 backdrop-blur-xl md:top-0 md:pt-2 mb-4">
               <CategoryPills
                 activeCategory={activeCategory}
                 onSelect={setActiveCategory}
               />
             </div>
 
-            {/* Visual Masonry Discovery Grid */}
-            <div className="pt-2">
+            {/* All / Filtered Creators Header */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Users className="h-4 w-4 text-muted" />
+                <h2 className="text-[14px] font-bold uppercase tracking-[0.08em] text-muted">
+                  {activeCategory === "All" ? "All Creators" : `${activeCategory} Creators`}
+                </h2>
+              </div>
+              <span className="text-[12px] font-semibold text-faint">
+                {filteredCreators.length} available
+              </span>
+            </div>
+
+            {/* Uniform Responsive Creator Grid */}
+            <div className="pt-1">
               {filteredCreators.length === 0 ? (
                 /* Empty State */
                 <Reveal>
@@ -210,7 +238,7 @@ export function ExplorePage() {
                     <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-paper text-muted">
                       <SearchX className="h-6 w-6" strokeWidth={1.8} />
                     </span>
-                    <h2 className="mt-4 font-display text-[22px] text-ink">
+                    <h2 className="mt-4 font-bold text-[20px] tracking-tight text-ink">
                       No creators match
                     </h2>
                     <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted">
@@ -224,23 +252,21 @@ export function ExplorePage() {
                         setActiveCategory("All");
                         setSearchQuery("");
                       }}
-                      className="mt-5 inline-flex rounded-full bg-ink px-6 py-2.5 text-[12.5px] font-bold text-white shadow-xs hover:bg-black active:scale-95 transition-all cursor-pointer"
+                      className="mt-5 inline-flex rounded-full bg-brand px-6 py-2.5 text-[12.5px] font-bold text-white shadow-xs hover:bg-brand-deep active:scale-95 transition-all cursor-pointer"
                     >
                       Reset filters
                     </button>
                   </div>
                 </Reveal>
               ) : (
-                /* Multi-column Masonry Layout */
-                <div className="columns-2 sm:columns-2 md:columns-2 lg:columns-3 xl:columns-3 2xl:columns-4 gap-3.5 space-y-3.5">
+                /* Uniform Responsive Card Grid */
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-4 sm:gap-5">
                   {filteredCreators.map((creator, index) => (
-                    <Reveal key={creator.id} delay={Math.min(index, 6) * 50}>
-                      <CreatorMasonryCard
+                    <Reveal key={creator.id} delay={Math.min(index, 6) * 40}>
+                      <CreatorCard
                         creator={creator}
                         onToggleFollow={handleToggleFollow}
-                        onSelectCreator={(c) => {
-                          navigate(`/app/@${c.handle.replace(/^@/, '')}`);
-                        }}
+                        onSelectCreator={handleSelectCreator}
                       />
                     </Reveal>
                   ))}
@@ -254,10 +280,7 @@ export function ExplorePage() {
         <RightRail
           suggested={suggested}
           onFollow={(creatorId) => {
-            const creator = creatorById[creatorId];
-            if (creator) {
-              handleToggleFollow(creatorId);
-            }
+            handleToggleFollow(creatorId);
           }}
           onTagClick={(tag) => {
             setSearchQuery(tag);

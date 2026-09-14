@@ -76,8 +76,8 @@ export function EmptyState({ query, onReset }: { query: string; onReset: () => v
       <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-paper text-muted">
         <SearchX className="h-6 w-6" strokeWidth={1.8} />
       </span>
-      <h2 className="mt-5 font-display text-[30px] leading-none">Nothing here yet</h2>
-      <p className="mx-auto mt-3 max-w-[36ch] text-[14px] leading-relaxed text-muted">
+      <h2 className="mt-5 font-bold text-[22px] tracking-tight text-ink">Nothing here yet</h2>
+      <p className="mx-auto mt-2.5 max-w-[36ch] text-[14px] leading-relaxed text-muted">
         {query
           ? `We couldn't find anything for “${query}”. Try a creator's name, a #tag, or a place.`
           : "There's nothing to show in this feed right now. Check back soon."}
@@ -101,7 +101,7 @@ export function EndOfFeed({ onExplore }: { onExplore: () => void }) {
       <span className="grid h-12 w-12 place-items-center rounded-full bg-surface text-brand shadow-card ring-1 ring-line">
         <Sparkles className="h-5 w-5" strokeWidth={1.9} />
       </span>
-      <p className="mt-4 font-display text-[26px] leading-none">You're all caught up</p>
+      <p className="mt-4 font-bold text-[20px] tracking-tight text-ink">You're all caught up</p>
       <p className="mt-2 max-w-[34ch] text-[13.5px] leading-relaxed text-muted">
         You've seen every new post from the last two days. Find someone new to follow?
       </p>

@@ -235,7 +235,7 @@ export function CreatorProfilePage() {
                 {/* Creator Name, Handle & Category */}
                 <div className="mb-2">
                   <div className="flex items-center gap-2">
-                    <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#121218] tracking-tight">
+                    <h1 className="font-bold text-2xl sm:text-3xl lg:text-4xl text-[#121218] tracking-tight">
                       {creator.name}
                     </h1>
                   </div>

@@ -127,7 +127,7 @@ export function NotificationsPage() {
                     <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
                   </button>
 
-                  <h1 className="font-display text-[26px] sm:text-[34px] font-bold tracking-tight text-ink">
+                  <h1 className="font-bold text-[24px] sm:text-[30px] tracking-tight text-ink">
                     Notifications
                   </h1>
 
@@ -206,7 +206,7 @@ export function NotificationsPage() {
                   <span className="inline-grid place-items-center h-[52px] w-[52px] rounded-full bg-paper border border-line text-muted mx-auto">
                     <Bell className="h-6 w-6" strokeWidth={1.9} />
                   </span>
-                  <h3 className="font-display text-[21px] font-bold text-ink mt-3.5">
+                  <h3 className="font-bold text-[19px] tracking-tight text-ink mt-3.5">
                     You're all caught up
                   </h3>
                   <p className="text-[13px] text-muted mt-1.5 max-w-sm mx-auto leading-relaxed">

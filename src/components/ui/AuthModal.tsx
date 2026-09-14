@@ -144,7 +144,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           {/* Header */}
           <div className="mb-5">
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-serif text-2xl font-light tracking-[0.25em] text-[#111111] block">
+              <span className="font-bold text-xl tracking-[0.2em] text-[#111111] block">
                 LUXE
               </span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-100 text-amber-900 border border-amber-200/70">
@@ -152,7 +152,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </span>
             </div>
             
-            <h3 className="font-serif text-2xl sm:text-3xl text-[#111111] font-normal tracking-tight">
+            <h3 className="font-bold text-xl sm:text-2xl text-[#111111] tracking-tight">
               {step === 'success'
                 ? 'Welcome to LUXE'
                 : mode === 'login'
@@ -346,7 +346,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-xs">
                 <Check className="w-8 h-8" />
               </div>
-              <h4 className="font-serif text-2xl text-[#111111] font-normal mb-1">
+              <h4 className="font-bold text-xl text-[#111111] tracking-tight mb-1">
                 Authentication Successful
               </h4>
               <p className="text-xs text-[#6E6E6E] mb-2">

@@ -142,7 +142,7 @@ export function SubscriptionsPage() {
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
-              <h1 className="font-display text-[22px] leading-tight text-ink">
+              <h1 className="font-bold text-[20px] tracking-tight text-ink">
                 My Subscriptions
               </h1>
             </div>
@@ -150,7 +150,7 @@ export function SubscriptionsPage() {
             {/* Desktop Page Title */}
             <div className="hidden md:flex items-center justify-between pt-6 pb-2">
               <div className="flex items-center gap-3">
-                <span className="font-display text-[30px] leading-none text-ink">
+                <span className="font-bold text-[26px] tracking-tight text-ink">
                   My Subscriptions
                 </span>
                 <span className="flex items-center gap-1.5 rounded-full bg-gold-soft border border-[#e9d6ab] px-2.5 py-0.5 text-[11px] font-extrabold tracking-wide text-gold-deep">
@@ -221,7 +221,7 @@ export function SubscriptionsPage() {
                 /* Empty State */
                 <Reveal>
                   <div className="my-8 rounded-[24px] border border-dashed border-line-strong bg-surface p-8 text-center shadow-card">
-                    <h3 className="font-display text-[20px] text-ink">
+                    <h3 className="font-bold text-[19px] tracking-tight text-ink">
                       No subscriptions here
                     </h3>
                     <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted">

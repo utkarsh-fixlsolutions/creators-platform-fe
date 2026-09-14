@@ -103,7 +103,7 @@ export function BecomeCreatorModal() {
             <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eceefe] text-[#2431c6] shadow-sm">
               <Check className="h-7 w-7 stroke-[2.5]" />
             </span>
-            <h2 className="mt-5 font-display text-[26px] tracking-tight text-ink">
+            <h2 className="mt-5 font-bold text-[22px] tracking-tight text-ink">
               You&apos;re on the list
             </h2>
             <p className="mt-2 text-[13.5px] leading-relaxed text-muted">
@@ -126,7 +126,7 @@ export function BecomeCreatorModal() {
             </span>
 
             {/* Headline & Subtitle */}
-            <h2 className="mt-4 font-display text-[26px] leading-tight tracking-tight text-ink">
+            <h2 className="mt-4 font-bold text-[22px] leading-tight tracking-tight text-ink">
               Become a Creator
             </h2>
             <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
