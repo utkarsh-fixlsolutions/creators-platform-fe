@@ -9,6 +9,7 @@ import { RightRail } from "../../components/RightRail";
 import { Sidebar, type NavItem } from "../../components/Sidebar";
 import { Toast } from "../../components/Toast";
 import { useNavigate } from "react-router-dom";
+import { useWalletStore } from "../../store/walletStore";
 
 export function FanHomePage() {
   const navigate = useNavigate();
@@ -233,8 +234,9 @@ export function FanHomePage() {
         <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
           <div className="mx-auto w-full max-w-[640px]">
             <FeedHeader
-              onLiveClick={() => navigate("/live")}
-              isLiveActive={false}
+              onMessagesClick={() => navigate("/messages")}
+              onNotificationsClick={() => navigate("/notifications")}
+              onWalletClick={() => notify(`Wallet Balance: ${useWalletStore.getState().coinsBalance.toLocaleString()} Coins`)}
             />
 
             {/* Sticky tab pill */}

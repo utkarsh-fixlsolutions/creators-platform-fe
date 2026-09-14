@@ -89,10 +89,11 @@ interface NavItemProps {
   item: NavItemConfig;
   active: boolean;
   rail: boolean;
+  secondary?: boolean;
   onClick: () => void;
 }
 
-function NavItemButton({ item, active, rail, onClick }: NavItemProps) {
+function NavItemButton({ item, active, rail, secondary, onClick }: NavItemProps) {
   const Icon = item.icon;
 
   return (
@@ -104,9 +105,12 @@ function NavItemButton({ item, active, rail, onClick }: NavItemProps) {
         aria-label={item.label}
         className={cn(
           "group relative flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[14px] font-medium tracking-[-0.01em] transition-all duration-200 active:scale-[0.98]",
+          secondary && "h-[34px] text-[13px]",
           rail && "md:justify-center md:px-0 lg:justify-start lg:px-3",
           active
-            ? "bg-ink text-white shadow-ink"
+            ? "bg-ink text-white shadow-ink font-medium"
+            : secondary
+            ? "text-muted hover:bg-surface/80 hover:text-ink hover:shadow-2xs"
             : "text-ink-soft hover:bg-surface hover:text-ink hover:shadow-card",
           item.danger && !active && "hover:bg-rose-50 hover:text-rose-600",
         )}
@@ -123,10 +127,11 @@ function NavItemButton({ item, active, rail, onClick }: NavItemProps) {
         <span className="relative shrink-0">
           <Icon
             className={cn(
-              "h-5 w-5 transition-transform duration-300 ease-out group-hover:scale-110",
-              active ? "text-white" : "text-ink-soft",
+              "transition-transform duration-300 ease-out group-hover:scale-110",
+              secondary ? "h-4 w-4" : "h-5 w-5",
+              active ? "text-white" : secondary ? "text-muted group-hover:text-ink" : "text-ink-soft group-hover:text-ink",
             )}
-            strokeWidth={active ? 2.3 : 1.9}
+            strokeWidth={active ? 2.3 : secondary ? 1.75 : 1.9}
           />
 
           {/* Animated Real-time Live pulse */}
@@ -190,13 +195,14 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
     return item;
   });
 
-  const renderGroup = (items: NavItemConfig[]) => (
+  const renderGroup = (items: NavItemConfig[], secondary = false) => (
     <ul className="space-y-0.5">
       {items.map((item) => (
         <NavItemButton
           key={item.id}
           item={item}
           rail={rail}
+          secondary={secondary}
           active={activeId === item.id}
           onClick={() => onNavigate(item)}
         />
@@ -221,21 +227,21 @@ export function Sidebar({ activeTab, onNavigate, onLogoClick }: SidebarProps) {
         {/* Navigation Sections */}
         <nav aria-label="Primary Navigation" className="flex-1 space-y-4">
           {/* Group 1: Primary Navigation */}
-          <div>{renderGroup(navItems)}</div>
+          <div>{renderGroup(navItems, false)}</div>
 
           {/* Group 2: For Fans */}
           <div role="group" aria-label="For fans">
-            <p className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-ink/40 hidden lg:block">
+            <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-faint hidden lg:block">
               For fans
             </p>
             <div className="mx-3 mb-2 hidden h-px bg-line md:block lg:hidden" />
-            {renderGroup(fansNav)}
+            {renderGroup(fansNav, true)}
           </div>
 
           {/* Group 3: System & Account */}
           <div>
             <div className="mx-3 mb-2 h-px bg-line" />
-            {renderGroup(systemNav)}
+            {renderGroup(systemNav, true)}
           </div>
         </nav>
 
