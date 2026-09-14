@@ -64,6 +64,8 @@ export function LiveNowPage() {
       navigate("/subscriptions");
     } else if (item.id === "explore" || item.id === "creators") {
       navigate("/explore");
+    } else if (item.id === "settings") {
+      navigate("/settings");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -81,7 +83,7 @@ export function LiveNowPage() {
     } else if (item.id === "subscriptions") {
       navigate("/subscriptions");
     } else if (item.id === "profile") {
-      notify("Fan Profile & Settings");
+      navigate("/settings");
     }
   };
 

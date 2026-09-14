@@ -132,9 +132,9 @@ export function FanHomePage() {
         navigate("/subscriptions");
       } else if (item.id === "explore" || item.id === "creators") {
         navigate("/explore");
+      } else if (item.id === "settings" || item.id === "profile") {
+        navigate("/settings");
       } else if (item.id === "home") {
-      } else if (item.id === "profile") {
-        notify("Fan Profile & Wallet settings");
       } else if (item.tab) {
         changeTab(item.tab);
       } else {

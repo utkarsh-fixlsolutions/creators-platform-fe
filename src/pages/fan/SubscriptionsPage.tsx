@@ -91,6 +91,8 @@ export function SubscriptionsPage() {
       // already here
     } else if (item.id === "explore" || item.id === "creators") {
       navigate("/explore");
+    } else if (item.id === "settings") {
+      navigate("/settings");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -108,7 +110,7 @@ export function SubscriptionsPage() {
     } else if (item.id === "subscriptions") {
       // already here
     } else if (item.id === "profile") {
-      notify("Fan Profile & Settings");
+      navigate("/settings");
     }
   };
 
