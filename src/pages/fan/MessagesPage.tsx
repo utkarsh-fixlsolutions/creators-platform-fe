@@ -349,10 +349,16 @@ export function MessagesPage() {
           <MobileBottomNav
             activeTab="messages"
             onNavigate={(item) => {
-              if (item.id === 'home' || item.id === 'explore') {
+              if (item.id === 'home') {
                 navigate('/app');
-              } else if (item.id === 'profile') {
-                notify('Fan Profile settings');
+              } else if (item.id === 'explore' || item.id === 'creators') {
+                navigate('/explore');
+              } else if (item.id === 'subscriptions') {
+                navigate('/subscriptions');
+              } else if (item.id === 'messages') {
+                setActiveId(null);
+              } else if (item.id === 'profile' || item.id === 'settings') {
+                navigate('/settings');
               }
             }}
             onCreate={() => notify('Drop composer')}
