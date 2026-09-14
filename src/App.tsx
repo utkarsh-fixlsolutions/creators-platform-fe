@@ -8,6 +8,8 @@ import { LiveRoomPage } from "./pages/fan/LiveRoomPage";
 import { SubscriptionsPage } from "./pages/fan/SubscriptionsPage";
 import { BecomeCreatorModal } from "./components/creator/BecomeCreatorModal";
 import { ExplorePage } from "./pages/fan/ExplorePage";
+import { SettingsPage } from "./pages/fan/SettingsPage";
+import { CreatorProfilePage } from "./pages/fan/CreatorProfilePage";
 
 export default function App() {
   return (
@@ -45,6 +47,16 @@ export default function App() {
         {/* Fan Subscriptions Hub */}
         <Route path="/subscriptions" element={<SubscriptionsPage />} />
         <Route path="/app/subscriptions" element={<SubscriptionsPage />} />
+
+        {/* Fan Settings Page */}
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/app/settings" element={<SettingsPage />} />
+
+        {/* Dedicated Creator Profile Screen */}
+        <Route path="/app/:handle" element={<CreatorProfilePage />} />
+        <Route path="/creator/:handle" element={<CreatorProfilePage />} />
+        <Route path="/app/creator/:handle" element={<CreatorProfilePage />} />
+        <Route path="/:handle" element={<CreatorProfilePage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

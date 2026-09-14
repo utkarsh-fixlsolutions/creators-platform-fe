@@ -83,7 +83,7 @@ export function NotificationsPanel({
     >
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-4 pb-3">
-        <h2 className="font-display text-[21px] font-bold text-ink">
+        <h2 className="font-bold text-[19px] tracking-tight text-ink">
           Notifications
         </h2>
         <button
@@ -111,7 +111,7 @@ export function NotificationsPanel({
       <div className="flex-1 overflow-y-auto [scrollbar-width:none]">
         {filteredItems.length === 0 ? (
           <div className="py-12 px-6 text-center">
-            <h3 className="font-display text-[19px] font-bold text-ink">
+            <h3 className="font-bold text-[17px] tracking-tight text-ink">
               Nothing here yet
             </h3>
             <p className="text-[12.5px] text-muted mt-1.5">

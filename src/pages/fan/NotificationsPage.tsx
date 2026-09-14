@@ -10,9 +10,12 @@ import { MobileBottomNav, MobileTopBar } from "../../components/MobileChrome";
 import { RightRail } from "../../components/RightRail";
 import { Toast } from "../../components/Toast";
 import { CREATORS, SUGGESTED_IDS, type Creator, type NotificationItem } from "../../data";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
 
 export function NotificationsPage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [tab, setTab] = useState<NotificationTab>("all");
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
@@ -77,6 +80,8 @@ export function NotificationsPage() {
       navigate("/subscriptions");
     } else if (item.id === "explore" || item.id === "creators") {
       navigate("/explore");
+    } else if (item.id === "settings") {
+      navigate("/settings");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -94,7 +99,7 @@ export function NotificationsPage() {
     } else if (item.id === "subscriptions") {
       navigate("/subscriptions");
     } else if (item.id === "profile") {
-      notify("Fan Profile & Wallet settings");
+      navigate("/settings");
     }
   };
 
@@ -102,7 +107,14 @@ export function NotificationsPage() {
     <div className="page-glow min-h-screen bg-paper text-ink">
       <MobileTopBar onNotify={notify} />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         {/* Left Sidebar */}
         <Sidebar
           activeTab="notifications"
@@ -127,7 +139,7 @@ export function NotificationsPage() {
                     <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
                   </button>
 
-                  <h1 className="font-display text-[26px] sm:text-[34px] font-bold tracking-tight text-ink">
+                  <h1 className="font-bold text-[24px] sm:text-[30px] tracking-tight text-ink">
                     Notifications
                   </h1>
 
@@ -206,7 +218,7 @@ export function NotificationsPage() {
                   <span className="inline-grid place-items-center h-[52px] w-[52px] rounded-full bg-paper border border-line text-muted mx-auto">
                     <Bell className="h-6 w-6" strokeWidth={1.9} />
                   </span>
-                  <h3 className="font-display text-[21px] font-bold text-ink mt-3.5">
+                  <h3 className="font-bold text-[19px] tracking-tight text-ink mt-3.5">
                     You're all caught up
                   </h3>
                   <p className="text-[13px] text-muted mt-1.5 max-w-sm mx-auto leading-relaxed">

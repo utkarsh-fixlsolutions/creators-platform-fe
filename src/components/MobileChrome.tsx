@@ -143,23 +143,61 @@ const MESSAGES_ITEM: NavItem = { id: "messages", label: "Messages", icon: Messag
 const PROFILE_ITEM: NavItem = { id: "profile", label: "Profile", icon: Users };
 
 /** Floating Capsule Bottom Navigation — Mobile Mode (Home || Explore || Subs || Messages || Profile) */
-export function MobileBottomNav({ activeTab, onNavigate }: Omit<Props, "onNotify">) {
+export function MobileBottomNav({
+  activeTab,
+  onNavigate,
+}: {
+  activeTab?: FeedTab | string;
+  onNavigate?: (item: NavItem) => void;
+  onCreate?: () => void;
+  onNotify?: (message: string) => void;
+}) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentTab =
+    activeTab ||
+    (location.pathname === "/app"
+      ? "home"
+      : location.pathname.startsWith("/explore") || location.pathname.startsWith("/creators")
+      ? "explore"
+      : location.pathname.startsWith("/subscriptions")
+      ? "subscriptions"
+      : location.pathname.startsWith("/messages")
+      ? "messages"
+      : location.pathname.startsWith("/settings")
+      ? "profile"
+      : "home");
+
   const isHomeActive =
-    activeTab === "foryou" ||
-    activeTab === "following" ||
-    activeTab === "exclusive" ||
-    activeTab === "live" ||
-    activeTab === "home";
+    currentTab === "foryou" ||
+    currentTab === "following" ||
+    currentTab === "exclusive" ||
+    currentTab === "live" ||
+    currentTab === "home";
 
   const isExploreActive =
-    activeTab === "trending" ||
-    activeTab === "search" ||
-    activeTab === "collections" ||
-    activeTab === "explore";
+    currentTab === "trending" ||
+    currentTab === "search" ||
+    currentTab === "collections" ||
+    currentTab === "explore" ||
+    currentTab === "creators";
 
-  const isSubsActive = activeTab === "subscriptions";
-  const isMessagesActive = activeTab === "messages";
-  const isProfileActive = activeTab === "profile";
+  const isSubsActive = currentTab === "subscriptions";
+  const isMessagesActive = currentTab === "messages";
+  const isProfileActive = currentTab === "profile" || currentTab === "settings";
+
+  const handleItemClick = (item: NavItem) => {
+    if (onNavigate) {
+      onNavigate(item);
+    } else {
+      if (item.id === "home") navigate("/app");
+      else if (item.id === "explore" || item.id === "creators") navigate("/explore");
+      else if (item.id === "subscriptions") navigate("/subscriptions");
+      else if (item.id === "messages") navigate("/messages");
+      else if (item.id === "profile" || item.id === "settings") navigate("/settings");
+    }
+  };
 
   const NavPill = ({
     item,
@@ -177,7 +215,7 @@ export function MobileBottomNav({ activeTab, onNavigate }: Omit<Props, "onNotify
     return (
       <button
         type="button"
-        onClick={() => onNavigate(item)}
+        onClick={() => handleItemClick(item)}
         aria-current={isActive ? "page" : undefined}
         aria-label={item.label}
         className={cn(
@@ -249,11 +287,11 @@ export function MobileBottomNav({ activeTab, onNavigate }: Omit<Props, "onNotify
         {/* 5. Profile */}
         <button
           type="button"
-          onClick={() => onNavigate(PROFILE_ITEM)}
+          onClick={() => handleItemClick(PROFILE_ITEM)}
           aria-current={isProfileActive ? "page" : undefined}
           aria-label="Profile"
           className={cn(
-            "group relative flex h-11 shrink-0 items-center justify-center transition-all duration-300 ease-out select-none",
+            "group relative flex h-11 shrink-0 items-center justify-center transition-all duration-300 ease-out select-none cursor-pointer",
             isProfileActive
               ? "rounded-full bg-ink px-3 text-white shadow-ink"
               : "w-11 rounded-full text-muted hover:bg-paper/80 hover:text-ink active:scale-95"

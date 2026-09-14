@@ -7,11 +7,15 @@ import { PostCard } from "../../components/PostCard";
 import { Reveal } from "../../components/Reveal";
 import { RightRail } from "../../components/RightRail";
 import { Sidebar, type NavItem } from "../../components/Sidebar";
-import { Toast } from "../../components/Toast";
 import { useNavigate } from "react-router-dom";
+import { useWalletStore } from "../../store/walletStore";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
+import { Toast } from "../../components/Toast";
 
 export function FanHomePage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [creators, setCreators] = useState<Creator[]>(CREATORS);
   const [posts, setPosts] = useState<Post[]>(POSTS);
   const [tab, setTab] = useState<FeedTab>("foryou");
@@ -131,9 +135,9 @@ export function FanHomePage() {
         navigate("/subscriptions");
       } else if (item.id === "explore" || item.id === "creators") {
         navigate("/explore");
+      } else if (item.id === "settings" || item.id === "profile") {
+        navigate("/settings");
       } else if (item.id === "home") {
-      } else if (item.id === "profile") {
-        notify("Fan Profile & Wallet settings");
       } else if (item.tab) {
         changeTab(item.tab);
       } else {
@@ -219,7 +223,14 @@ export function FanHomePage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         
         {/* Left Sidebar */}
         <Sidebar
@@ -232,15 +243,19 @@ export function FanHomePage() {
         {/* Center Main Feed */}
         <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
           <div className="mx-auto w-full max-w-[640px]">
-            <FeedHeader
-              onLiveClick={() => navigate("/live")}
-              isLiveActive={false}
-            />
+            {/* Desktop-only Feed Header (hidden on mobile to eliminate repetitive notification/messages/coins) */}
+            <div className="hidden md:block">
+              <FeedHeader
+                onMessagesClick={() => navigate("/messages")}
+                onNotificationsClick={() => navigate("/notifications")}
+                onWalletClick={() => notify(`Wallet Balance: ${useWalletStore.getState().coinsBalance.toLocaleString()} Coins`)}
+              />
+            </div>
 
-            {/* Sticky tab pill */}
+            {/* Desktop-only Sticky tab pill (hidden on mobile since bottom navigation notch provides tabs) */}
             <div
               ref={feedTopRef}
-              className="sticky top-14 z-20 bg-paper/85 py-3 backdrop-blur-xl md:top-0 md:pt-5"
+              className="hidden md:block sticky top-0 z-20 bg-paper/85 py-3 md:pt-5 backdrop-blur-xl"
             >
               <FeedTabs active={tab} onChange={changeTab} query={query} onQueryChange={setQuery} />
             </div>
@@ -251,7 +266,7 @@ export function FanHomePage() {
               role="tabpanel"
               aria-labelledby={`tab-${tab}`}
               aria-live="polite"
-              className="pt-3"
+              className="pt-3.5 sm:pt-4 md:pt-3"
             >
               {visiblePosts.length === 0 ? (
                 <EmptyState

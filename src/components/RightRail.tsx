@@ -1,4 +1,5 @@
-import { ArrowUpRight, BadgeCheck, Sparkles, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
+import { BadgeCheck, TrendingUp } from "lucide-react";
 import type { Creator } from "../data";
 import { TRENDING_TAGS } from "../data";
 import { cn } from "../utils/cn";
@@ -41,18 +42,23 @@ export function RightRail({ suggested, onFollow, onTagClick, onNotify }: RightRa
                   key={creator.id}
                   className="-mx-2 flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors duration-200 hover:bg-paper"
                 >
-                  <Avatar src={creator.avatar} alt={creator.name} size={42} />
-                  <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-1 truncate text-[14px] font-semibold">
-                      <span className="truncate">{creator.name}</span>
-                      {creator.verified && (
-                        <BadgeCheck className="h-4 w-4 shrink-0 fill-brand text-white" />
-                      )}
-                    </p>
-                    <p className="truncate text-xs text-muted">
-                      {creator.category} · {formatCount(creator.fans)} fans
-                    </p>
-                  </div>
+                  <Link
+                    to={`/app/@${creator.handle.replace(/^@/, '')}`}
+                    className="flex items-center gap-3 min-w-0 flex-1 group"
+                  >
+                    <Avatar src={creator.avatar} alt={creator.name} size={42} />
+                    <div className="min-w-0 flex-1">
+                      <p className="flex items-center gap-1 truncate text-[14px] font-semibold group-hover:text-brand transition-colors">
+                        <span className="truncate">{creator.name}</span>
+                        {creator.verified && (
+                          <BadgeCheck className="h-4 w-4 shrink-0 fill-brand text-white" />
+                        )}
+                      </p>
+                      <p className="truncate text-xs text-muted">
+                        {creator.category} · {formatCount(creator.fans)} fans
+                      </p>
+                    </div>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => onFollow(creator.id)}
@@ -72,21 +78,18 @@ export function RightRail({ suggested, onFollow, onTagClick, onNotify }: RightRa
           </section>
         </Reveal>
 
-        {/* Trending */}
+        {/* Trending — Plain quiet list */}
         <Reveal delay={160}>
-          <section
-            aria-labelledby="trending-heading"
-            className="rounded-[24px] border border-line bg-surface p-5 shadow-card"
-          >
-            <header className="mb-3 flex items-center justify-between">
+          <section aria-labelledby="trending-heading" className="px-1 pt-1">
+            <header className="mb-2.5 flex items-center justify-between">
               <h2
                 id="trending-heading"
-                className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em]"
+                className="flex items-center gap-1.5 text-[13px] font-semibold tracking-[-0.01em] text-muted"
               >
-                <TrendingUp className="h-4 w-4 text-brand" />
+                <TrendingUp className="h-3.5 w-3.5 text-brand" />
                 Trending now
               </h2>
-              <span className="text-xs text-muted">24h</span>
+              <span className="text-[11px] text-faint">24h</span>
             </header>
             <ol className="space-y-0.5">
               {TRENDING_TAGS.map((item, index) => (
@@ -94,20 +97,20 @@ export function RightRail({ suggested, onFollow, onTagClick, onNotify }: RightRa
                   <button
                     type="button"
                     onClick={() => onTagClick(item.tag)}
-                    className="group -mx-2 flex w-[calc(100%+1rem)] items-center gap-3 rounded-2xl px-2 py-2 text-left transition-colors duration-200 hover:bg-paper"
+                    className="group -mx-2 flex w-[calc(100%+1rem)] items-center gap-2.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-surface/80"
                   >
-                    <span className="w-5 font-display text-xl leading-none text-faint transition-colors group-hover:text-ink">
+                    <span className="w-4 text-xs font-semibold tabular-nums text-faint transition-colors group-hover:text-ink">
                       {index + 1}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[14px] font-semibold text-ink">
+                      <span className="block truncate text-[13.5px] font-semibold text-ink">
                         #{item.tag}
                       </span>
-                      <span className="block text-xs text-muted">
+                      <span className="block text-[11px] text-muted tabular-nums">
                         {formatCount(item.posts)} posts
                       </span>
                     </span>
-                    <span className="rounded-full bg-[#e7f6ec] px-2 py-0.5 text-[11px] font-semibold text-[#1f8a4c]">
+                    <span className="rounded-full bg-[#e7f6ec] px-2 py-0.5 text-[10.5px] font-semibold tabular-nums text-[#1f8a4c]">
                       {item.delta}
                     </span>
                   </button>
@@ -117,44 +120,7 @@ export function RightRail({ suggested, onFollow, onTagClick, onNotify }: RightRa
           </section>
         </Reveal>
 
-        {/* Creators+ upsell */}
-        <Reveal delay={240}>
-          <section
-            aria-labelledby="plus-heading"
-            className="relative overflow-hidden rounded-[24px] bg-ink p-6 text-white shadow-[0_24px_48px_-24px_rgba(18,18,24,0.6)]"
-          >
-            <div
-              aria-hidden="true"
-              className="absolute -right-16 -top-16 h-48 w-48 animate-float rounded-full bg-brand/70 blur-3xl"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-20 -left-10 h-44 w-44 rounded-full bg-gold/50 blur-3xl"
-            />
-            <div className="relative">
-              <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/90 ring-1 ring-white/15">
-                <Sparkles className="h-3 w-3 text-[#f2c56a]" />
-                Creators+
-              </p>
-              <h2 id="plus-heading" className="mt-4 font-display text-[30px] leading-[1.02]">
-                Unlock every <em className="text-[#f2c56a]">exclusive</em> drop.
-              </h2>
-              <p className="mt-3 text-[13px] leading-relaxed text-white/70">
-                One membership, 1,200+ creators, early access to everything. Cancel anytime.
-              </p>
-              <button
-                type="button"
-                onClick={() => onNotify("Free trial started — welcome to Creators+")}
-                className="group mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-white text-sm font-semibold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-paper hover:shadow-lg"
-              >
-                Start 7‑day free trial
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </div>
-          </section>
-        </Reveal>
-
-        <footer className="mt-auto px-2 pt-2 text-[11.5px] leading-relaxed text-faint">
+        <footer className="mt-auto px-1 pt-2 text-[11.5px] leading-relaxed text-faint">
           <nav aria-label="Footer" className="flex flex-wrap gap-x-3 gap-y-1">
             {["About", "Help", "Creators", "Privacy", "Terms"].map((link) => (
               <a key={link} href="#top" className="transition-colors hover:text-ink">

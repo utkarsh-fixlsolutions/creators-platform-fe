@@ -17,7 +17,7 @@ export function CategoryPills({
       role="tablist"
       aria-label="Creator categories"
       className={cn(
-        "flex gap-2 overflow-x-auto py-1 quiet-scroll select-none",
+        "flex gap-2 overflow-x-auto py-1 no-scrollbar select-none",
         className
       )}
     >

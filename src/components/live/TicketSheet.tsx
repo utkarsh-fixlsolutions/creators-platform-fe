@@ -75,7 +75,7 @@ export function TicketSheet({ room, onClose, onPurchase }: TicketSheetProps) {
           <span>{creatorName}</span>
           <VerifiedBadge size={16} />
         </div>
-        <h2 className="font-display text-[26px] leading-tight text-white mt-2">
+        <h2 className="font-bold text-[22px] leading-tight tracking-tight text-white mt-2">
           {room.title}
         </h2>
         <p className="mt-2 text-[13px] font-semibold text-white/75">
@@ -94,7 +94,7 @@ export function TicketSheet({ room, onClose, onPurchase }: TicketSheetProps) {
               </span>
               <div className="mt-1 flex items-center gap-2">
                 <Coins className="h-5 w-5 stroke-[2.2] text-gold" />
-                <span className="font-display text-[30px] leading-none text-ink">
+                <span className="font-bold text-[24px] tracking-tight leading-none text-ink">
                   {price} Coins
                 </span>
               </div>

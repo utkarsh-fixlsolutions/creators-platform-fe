@@ -1,118 +1,71 @@
-import { Radio, SearchX, Sparkles } from "lucide-react";
-import { ME } from "../data";
-import { greeting } from "../utils/format";
-import { cn } from "../utils/cn";
-import { useCreatorStore } from "../store/creatorStore";
+import { Bell, Coins, MessageCircle, SearchX, Sparkles } from "lucide-react";
+import { useWalletStore } from "../store/walletStore";
+import { useNotificationStore } from "../store/notificationStore";
 
-/* ---- Page header with Live Now Action Button -------------------------- */
+/* ---- Page header: Clean screen label with right-aligned utility actions --- */
 
 interface FeedHeaderProps {
-  onLiveClick?: () => void;
-  isLiveActive?: boolean;
+  onMessagesClick?: () => void;
+  onNotificationsClick?: () => void;
+  onWalletClick?: () => void;
 }
 
-export function FeedHeader({ onLiveClick, isLiveActive }: FeedHeaderProps) {
+export function FeedHeader({
+  onMessagesClick,
+  onNotificationsClick,
+  onWalletClick,
+}: FeedHeaderProps) {
+  const coinsBalance = useWalletStore((s) => s.coinsBalance);
+  const unreadNotifications = useNotificationStore((s) => s.unreadCount());
+
   return (
-    <header className="pb-3 pt-6 sm:pt-8 md:pb-2">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand">
-        {greeting()}, {ME.name.split(" ")[0]}
-      </p>
-      
-      <div className="mt-1.5 flex items-center justify-between gap-4">
-        <h1 className="font-display text-[38px] leading-[0.95] tracking-[-0.015em] text-ink sm:text-[48px] lg:text-[52px]">
-          Discovery <em className="text-brand not-italic">Feed</em>
-        </h1>
+    <header className="flex items-center justify-between pb-3.5 pt-5 sm:pt-6">
+      <h1 className="text-[20px] font-bold tracking-tight text-ink">
+        Home
+      </h1>
 
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Become a Creator Action Button */}
-          <button
-            type="button"
-            onClick={() => useCreatorStore.getState().openModal()}
-            className="group relative hidden sm:inline-flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[12px] font-bold text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-95 cursor-pointer select-none"
-          >
-            <Sparkles className="h-3.5 w-3.5 text-gold-deep" />
-            <span>Become a Creator</span>
-          </button>
-
-          {/* Highlighted Live Now Button placed in the line of Discovery Feed on right side */}
-          <button
-            type="button"
-            onClick={onLiveClick}
-            aria-pressed={isLiveActive}
-            title={isLiveActive ? "Showing live creators — Click to show all" : "Filter to live creators"}
-            className={cn(
-              "group relative hidden md:flex items-center gap-2.5 rounded-full border py-1.5 pl-2.5 pr-4 shadow-card transition-all duration-300 hover:shadow-card-hover active:scale-95 select-none shrink-0 cursor-pointer",
-              isLiveActive
-                ? "border-rose bg-rose text-white shadow-pop ring-2 ring-rose/30"
-                : "border-rose/35 bg-surface text-ink hover:border-rose/60 hover:bg-rose-50/40"
-            )}
-          >
-          {/* Animated Radar Beacon Dot */}
-          <span className="relative flex h-3.5 w-3.5 items-center justify-center">
-            <span
-              className={cn(
-                "absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping",
-                isLiveActive ? "bg-white" : "bg-rose"
-              )}
-            />
-            <span
-              className={cn(
-                "relative inline-flex h-2.5 w-2.5 rounded-full ring-2",
-                isLiveActive ? "bg-white ring-rose" : "bg-rose ring-surface"
-              )}
-            />
+      <div className="flex items-center gap-2.5">
+        {/* Wallet Balance Pill */}
+        <button
+          type="button"
+          onClick={onWalletClick}
+          aria-label="Wallet balance"
+          className="flex h-9 items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 text-xs font-semibold text-ink shadow-xs transition-all duration-200 hover:border-line-strong hover:bg-paper-deep/50 active:scale-95 cursor-pointer select-none"
+        >
+          <Coins className="h-3.5 w-3.5 text-muted" />
+          <span className="tabular-nums font-semibold text-ink">
+            {coinsBalance.toLocaleString()} Coins
           </span>
+        </button>
 
-          {/* Label + Dynamic Animated Equalizer Bars */}
-          <div className="flex items-center gap-2">
-            <span
-              className={cn(
-                "text-[13px] font-bold tracking-[0.05em] uppercase",
-                isLiveActive ? "text-white" : "text-ink group-hover:text-rose transition-colors"
-              )}
-            >
-              Live now
-            </span>
+        {/* Messages Shortcut Button */}
+        <button
+          type="button"
+          onClick={onMessagesClick}
+          aria-label="Messages"
+          className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink-soft shadow-xs transition-all duration-200 hover:border-line-strong hover:bg-paper-deep/50 hover:text-ink active:scale-95 cursor-pointer"
+        >
+          <MessageCircle className="h-4 w-4 transition-transform group-hover:scale-105" strokeWidth={1.9} />
+          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold tabular-nums text-white ring-2 ring-paper">
+            3
+          </span>
+        </button>
 
-            {/* 3 Animated Soundwave/Equalizer Bars */}
-            <div className="flex h-3.5 items-end gap-0.5" aria-hidden="true">
-              <span
-                className={cn(
-                  "w-[2.5px] rounded-full animate-eq-1",
-                  isLiveActive ? "bg-white" : "bg-rose"
-                )}
-              />
-              <span
-                className={cn(
-                  "w-[2.5px] rounded-full animate-eq-2",
-                  isLiveActive ? "bg-white" : "bg-rose"
-                )}
-              />
-              <span
-                className={cn(
-                  "w-[2.5px] rounded-full animate-eq-3",
-                  isLiveActive ? "bg-white" : "bg-rose"
-                )}
-              />
-            </div>
-
-            {/* Active Count Badge */}
-            <span
-              className={cn(
-                "flex items-center rounded-full px-2 py-0.5 text-[11px] font-bold",
-                isLiveActive
-                  ? "bg-white/25 text-white"
-                  : "bg-rose-soft text-rose"
-              )}
-            >
-              3
-            </span>
-          </div>
+        {/* Notifications Shortcut Button */}
+        <button
+          type="button"
+          onClick={onNotificationsClick}
+          aria-label="Notifications"
+          className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink-soft shadow-xs transition-all duration-200 hover:border-line-strong hover:bg-paper-deep/50 hover:text-ink active:scale-95 cursor-pointer"
+        >
+          <Bell className="h-4 w-4 transition-transform group-hover:scale-105" strokeWidth={1.9} />
+          <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 text-[9.5px] font-bold tabular-nums text-white ring-2 ring-paper">
+            {unreadNotifications > 0 ? unreadNotifications : 6}
+          </span>
         </button>
       </div>
-    </div>
-  </header>
-);
+    </header>
+  );
 }
 
 /* ---- Empty state --------------------------------------------------------- */
@@ -123,8 +76,8 @@ export function EmptyState({ query, onReset }: { query: string; onReset: () => v
       <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-paper text-muted">
         <SearchX className="h-6 w-6" strokeWidth={1.8} />
       </span>
-      <h2 className="mt-5 font-display text-[30px] leading-none">Nothing here yet</h2>
-      <p className="mx-auto mt-3 max-w-[36ch] text-[14px] leading-relaxed text-muted">
+      <h2 className="mt-5 font-bold text-[22px] tracking-tight text-ink">Nothing here yet</h2>
+      <p className="mx-auto mt-2.5 max-w-[36ch] text-[14px] leading-relaxed text-muted">
         {query
           ? `We couldn't find anything for “${query}”. Try a creator's name, a #tag, or a place.`
           : "There's nothing to show in this feed right now. Check back soon."}
@@ -148,7 +101,7 @@ export function EndOfFeed({ onExplore }: { onExplore: () => void }) {
       <span className="grid h-12 w-12 place-items-center rounded-full bg-surface text-brand shadow-card ring-1 ring-line">
         <Sparkles className="h-5 w-5" strokeWidth={1.9} />
       </span>
-      <p className="mt-4 font-display text-[26px] leading-none">You're all caught up</p>
+      <p className="mt-4 font-bold text-[20px] tracking-tight text-ink">You're all caught up</p>
       <p className="mt-2 max-w-[34ch] text-[13.5px] leading-relaxed text-muted">
         You've seen every new post from the last two days. Find someone new to follow?
       </p>
