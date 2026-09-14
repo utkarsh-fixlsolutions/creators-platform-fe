@@ -231,8 +231,8 @@ export function FanHomePage() {
         />
 
         {/* Center Main Feed */}
-        <main className="min-w-0 px-4 pb-28 sm:px-6 md:pb-14 lg:px-8">
-          <div className="mx-auto w-full max-w-[640px]">
+        <main className="min-w-0 px-2.5 sm:px-5 md:px-6 lg:px-8 pb-28 md:pb-14">
+          <div className="mx-auto w-full max-w-[650px]">
             <FeedHeader
               onMessagesClick={() => navigate("/messages")}
               onNotificationsClick={() => navigate("/notifications")}
