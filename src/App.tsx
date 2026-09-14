@@ -21,12 +21,6 @@ export default function App() {
         {/* Pixel-Perfect Fan Discovery Homepage */}
         <Route path="/app" element={<FanHomePage />} />
 
-        {/* Dedicated Creator Profile Screen */}
-        <Route path="/app/@:handle" element={<CreatorProfilePage />} />
-        <Route path="/@:handle" element={<CreatorProfilePage />} />
-        <Route path="/creator/:handle" element={<CreatorProfilePage />} />
-        <Route path="/app/creator/:handle" element={<CreatorProfilePage />} />
-
         {/* Visual Masonry Creator Explore Hub */}
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/app/explore" element={<ExplorePage />} />
@@ -52,6 +46,12 @@ export default function App() {
         {/* Fan Subscriptions Hub */}
         <Route path="/subscriptions" element={<SubscriptionsPage />} />
         <Route path="/app/subscriptions" element={<SubscriptionsPage />} />
+
+        {/* Dedicated Creator Profile Screen */}
+        <Route path="/app/:handle" element={<CreatorProfilePage />} />
+        <Route path="/creator/:handle" element={<CreatorProfilePage />} />
+        <Route path="/app/creator/:handle" element={<CreatorProfilePage />} />
+        <Route path="/:handle" element={<CreatorProfilePage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
