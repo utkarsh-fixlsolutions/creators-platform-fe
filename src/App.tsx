@@ -8,6 +8,7 @@ import { LiveRoomPage } from "./pages/fan/LiveRoomPage";
 import { SubscriptionsPage } from "./pages/fan/SubscriptionsPage";
 import { BecomeCreatorModal } from "./components/creator/BecomeCreatorModal";
 import { ExplorePage } from "./pages/fan/ExplorePage";
+import { CreatorProfilePage } from "./pages/fan/CreatorProfilePage";
 
 export default function App() {
   return (
@@ -19,6 +20,12 @@ export default function App() {
 
         {/* Pixel-Perfect Fan Discovery Homepage */}
         <Route path="/app" element={<FanHomePage />} />
+
+        {/* Dedicated Creator Profile Screen */}
+        <Route path="/app/@:handle" element={<CreatorProfilePage />} />
+        <Route path="/@:handle" element={<CreatorProfilePage />} />
+        <Route path="/creator/:handle" element={<CreatorProfilePage />} />
+        <Route path="/app/creator/:handle" element={<CreatorProfilePage />} />
 
         {/* Visual Masonry Creator Explore Hub */}
         <Route path="/explore" element={<ExplorePage />} />

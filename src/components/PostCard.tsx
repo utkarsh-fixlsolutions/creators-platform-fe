@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import {
   BadgeCheck,
   Bookmark,
@@ -97,41 +98,46 @@ export function PostCard({
     >
       {/* ---- Creator header ------------------------------------------------ */}
       <header className="flex items-center gap-3 px-4 pb-3 pt-4 sm:px-5">
-        <Avatar
-          src={creator.avatar}
-          alt={creator.name}
-          size={44}
-          ring={post.live ? "live" : creator.membership ? "gold" : undefined}
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <h2
-              id={`post-${post.id}-creator`}
-              className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink"
-            >
-              {creator.name}
-            </h2>
-            {creator.verified && (
-              <BadgeCheck
-                className="h-[17px] w-[17px] shrink-0 fill-brand text-white"
-                aria-label="Verified"
-              />
-            )}
-            {post.exclusive && (
-              <span className="ml-1 hidden items-center gap-1 rounded-full bg-gold-soft px-2 py-0.5 text-[11px] font-semibold text-gold-deep sm:inline-flex">
-                <Sparkles className="h-3 w-3" />
-                {post.unlocked ? "Members" : "Exclusive"}
-              </span>
-            )}
+        <Link
+          to={`/app/@${creator.handle.replace(/^@/, '')}`}
+          className="flex items-center gap-3 min-w-0 flex-1 group/author"
+        >
+          <Avatar
+            src={creator.avatar}
+            alt={creator.name}
+            size={44}
+            ring={post.live ? "live" : creator.membership ? "gold" : undefined}
+          />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <h2
+                id={`post-${post.id}-creator`}
+                className="truncate text-[15px] font-semibold tracking-[-0.01em] text-ink group-hover/author:text-brand transition-colors"
+              >
+                {creator.name}
+              </h2>
+              {creator.verified && (
+                <BadgeCheck
+                  className="h-[17px] w-[17px] shrink-0 fill-brand text-white"
+                  aria-label="Verified"
+                />
+              )}
+              {post.exclusive && (
+                <span className="ml-1 hidden items-center gap-1 rounded-full bg-gold-soft px-2 py-0.5 text-[11px] font-semibold text-gold-deep sm:inline-flex">
+                  <Sparkles className="h-3 w-3" />
+                  {post.unlocked ? "Members" : "Exclusive"}
+                </span>
+              )}
+            </div>
+            <p className="truncate text-[13px] text-muted">
+              @{creator.handle}
+              <span className="mx-1.5 text-faint">·</span>
+              {creator.category}
+              <span className="mx-1.5 text-faint">·</span>
+              <time className={cn(post.live && "font-semibold text-live")}>{post.timeAgo}</time>
+            </p>
           </div>
-          <p className="truncate text-[13px] text-muted">
-            @{creator.handle}
-            <span className="mx-1.5 text-faint">·</span>
-            {creator.category}
-            <span className="mx-1.5 text-faint">·</span>
-            <time className={cn(post.live && "font-semibold text-live")}>{post.timeAgo}</time>
-          </p>
-        </div>
+        </Link>
         <FollowButton following={creator.following} onClick={() => onFollow(creator.id)} />
       </header>
 

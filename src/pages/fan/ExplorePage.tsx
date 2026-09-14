@@ -239,7 +239,7 @@ export function ExplorePage() {
                         creator={creator}
                         onToggleFollow={handleToggleFollow}
                         onSelectCreator={(c) => {
-                          notify(`Viewing ${c.name}'s portfolio profile`);
+                          navigate(`/app/@${c.handle.replace(/^@/, '')}`);
                         }}
                       />
                     </Reveal>
