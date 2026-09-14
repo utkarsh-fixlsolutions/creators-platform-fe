@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Check, MessageCircle, MoreVertical, RefreshCw, XCircle } from "lucide-react";
 import type { SubscriptionItem } from "../../store/subscriptionStore";
 import { VerifiedBadge } from "../ui/VerifiedBadge";
@@ -41,21 +42,26 @@ export function SubscriptionCard({
     <div className="rounded-[22px] border border-line bg-surface p-3.5 sm:p-4 shadow-card transition-all duration-200 hover:shadow-card-hover">
       {/* Top Profile & Status Row */}
       <div className="flex items-center gap-3">
-        <span
-          className="h-12 w-12 shrink-0 rounded-full border border-line bg-paper-deep shadow-xs"
+        <Link
+          to={`/app/@${subscription.handle.replace(/^@/, '')}`}
+          className="h-12 w-12 shrink-0 rounded-full border border-line bg-paper-deep shadow-xs block cursor-pointer transition-opacity hover:opacity-80"
           style={{
             backgroundImage: `url("${subscription.avatar}")`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
+          aria-label={`View ${subscription.name}'s profile`}
         />
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5 leading-tight">
-            <span className="truncate text-[14.5px] font-bold text-ink">
+          <Link
+            to={`/app/@${subscription.handle.replace(/^@/, '')}`}
+            className="flex items-center gap-1.5 leading-tight group cursor-pointer"
+          >
+            <span className="truncate text-[14.5px] font-bold text-ink group-hover:text-brand transition-colors">
               {subscription.name}
             </span>
             {subscription.verified && <VerifiedBadge size={14} />}
-          </div>
+          </Link>
           <p className="mt-1 text-[12px] leading-none text-muted">
             {subscription.tier} Tier · {subscription.price} Coins/mo
           </p>

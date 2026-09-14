@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { BadgeCheck, TrendingUp } from "lucide-react";
 import type { Creator } from "../data";
 import { TRENDING_TAGS } from "../data";
@@ -41,18 +42,23 @@ export function RightRail({ suggested, onFollow, onTagClick, onNotify }: RightRa
                   key={creator.id}
                   className="-mx-2 flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors duration-200 hover:bg-paper"
                 >
-                  <Avatar src={creator.avatar} alt={creator.name} size={42} />
-                  <div className="min-w-0 flex-1">
-                    <p className="flex items-center gap-1 truncate text-[14px] font-semibold">
-                      <span className="truncate">{creator.name}</span>
-                      {creator.verified && (
-                        <BadgeCheck className="h-4 w-4 shrink-0 fill-brand text-white" />
-                      )}
-                    </p>
-                    <p className="truncate text-xs text-muted">
-                      {creator.category} · {formatCount(creator.fans)} fans
-                    </p>
-                  </div>
+                  <Link
+                    to={`/app/@${creator.handle.replace(/^@/, '')}`}
+                    className="flex items-center gap-3 min-w-0 flex-1 group"
+                  >
+                    <Avatar src={creator.avatar} alt={creator.name} size={42} />
+                    <div className="min-w-0 flex-1">
+                      <p className="flex items-center gap-1 truncate text-[14px] font-semibold group-hover:text-brand transition-colors">
+                        <span className="truncate">{creator.name}</span>
+                        {creator.verified && (
+                          <BadgeCheck className="h-4 w-4 shrink-0 fill-brand text-white" />
+                        )}
+                      </p>
+                      <p className="truncate text-xs text-muted">
+                        {creator.category} · {formatCount(creator.fans)} fans
+                      </p>
+                    </div>
+                  </Link>
                   <button
                     type="button"
                     onClick={() => onFollow(creator.id)}
