@@ -126,6 +126,8 @@ export function SettingsPage() {
       navigate("/explore");
     } else if (item.id === "settings") {
       // already on settings
+    } else if (item.id === "wallet") {
+      navigate("/wallet");
     } else {
       notify(`${item.label} is coming soon`);
     }
