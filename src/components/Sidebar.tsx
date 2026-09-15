@@ -84,7 +84,7 @@ export function navIdForTab(tab: FeedTab | string): string {
 /*  Nav Item Component                                                 */
 /* ------------------------------------------------------------------ */
 
-interface NavItemProps {
+export interface NavItemProps {
   item: NavItemConfig;
   active: boolean;
   collapsed: boolean;
@@ -92,7 +92,7 @@ interface NavItemProps {
   onClick: () => void;
 }
 
-function NavItemButton({ item, active, collapsed, secondary, onClick }: NavItemProps) {
+export function NavItemButton({ item, active, collapsed, secondary, onClick }: NavItemProps) {
   const Icon = item.icon;
 
   return (
