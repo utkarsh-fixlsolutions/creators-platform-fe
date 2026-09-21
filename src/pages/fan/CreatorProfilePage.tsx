@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ChevronLeft,
@@ -12,7 +12,6 @@ import {
   Sparkles,
   ArrowLeft,
   X,
-  Heart
 } from "lucide-react";
 import { getCreatorProfile, ProfilePost } from "../../data/creatorProfileData";
 import { useWalletStore } from "../../store/walletStore";
@@ -48,7 +47,7 @@ export function CreatorProfilePage() {
   const handleSubscribe = () => {
     if (!subscribed) {
       if (coinsBalance >= creator.price) {
-        deductCoins(creator.price);
+        deductCoins(creator.price, `Subscription: ${creator.name}`);
         setSubscribed(true);
         notify(`🎉 Subscribed to ${creator.name}! Locked vault archive unlocked.`);
       } else {

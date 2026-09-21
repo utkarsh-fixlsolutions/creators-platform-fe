@@ -11,6 +11,7 @@ export interface UserSession {
   activeRole: 'fan' | 'creator';
   verificationStatus: 'none' | 'pending' | 'verified' | 'rejected';
   identityStrength: 'weak' | 'standard' | 'verified';
+  bio?: string;
 }
 
 interface SessionState {
@@ -47,6 +48,7 @@ export const DEMO_CREATOR_USER: UserSession = {
   activeRole: 'creator',
   verificationStatus: 'verified',
   identityStrength: 'verified',
+  bio: 'Ceramic artist & editorial photographer. Sharing studio days, behind-the-scenes, and exclusive drops.',
 };
 
 export const useSessionStore = create<SessionState>((set) => ({

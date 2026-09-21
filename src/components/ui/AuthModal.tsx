@@ -105,7 +105,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     if (onSuccess) {
       onSuccess();
     }
-    navigate('/app');
+    navigate(role === 'creator' ? '/studio' : '/app');
   };
 
   if (!isOpen) return null;
@@ -360,7 +360,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 onClick={handleEnterEcosystem}
                 className="w-full py-3.5 bg-[#111111] hover:bg-[#2A2A2A] text-white text-xs font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-98 cursor-pointer"
               >
-                <span>Enter LUXE Discovery Feed</span>
+                <span>{role === 'creator' ? 'Enter Creator Studio' : 'Enter LUXE Discovery Feed'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
