@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Lock, Play, Pause, Gem, Unlock, Sparkles, Video } from 'lucide-react';
 import type { Conversation, Message } from '../../data/messagesData';
 import { cn } from '../../utils/cn';
@@ -8,6 +8,10 @@ interface Props {
   typing: boolean;
   onUnlock: (messageId: string) => void;
   justUnlockedId: string | null;
+  /** Whose messages render right-aligned as "mine" — defaults to the fan's view. */
+  viewerRole?: 'fan' | 'creator';
+  typingLabel?: string;
+  noticeText?: ReactNode;
 }
 
 /* ---------- Voice Memo Player Component ---------- */
@@ -196,6 +200,9 @@ export default function ChatStream({
   typing,
   onUnlock,
   justUnlockedId,
+  viewerRole = 'fan',
+  typingLabel,
+  noticeText,
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -208,12 +215,16 @@ export default function ChatStream({
       <div className="mx-auto max-w-3xl w-full space-y-4">
         {/* Encryption & Safety Notice */}
         <div className="mx-auto max-w-sm rounded-2xl border border-line bg-surface/70 px-4 py-2 text-center text-[11px] text-muted shadow-xs backdrop-blur-sm">
-          🔒 Direct message stream with <span className="font-semibold text-ink">{conversation.creator.name}</span>. Tips and drops support the creator directly.
+          {noticeText ?? (
+            <>
+              🔒 Direct message stream with <span className="font-semibold text-ink">{conversation.creator.name}</span>. Tips and drops support the creator directly.
+            </>
+          )}
         </div>
 
         {/* Message Timeline */}
         {conversation.messages.map((m) => {
-          const mine = m.sender === 'fan';
+          const mine = m.sender === viewerRole;
 
           return (
             <div
@@ -287,7 +298,7 @@ export default function ChatStream({
             <span className="h-2 w-2 rounded-full bg-muted animate-bounce [animation-delay:0.2s]" />
             <span className="h-2 w-2 rounded-full bg-muted animate-bounce [animation-delay:0.4s]" />
             <span className="text-xs text-muted font-medium ml-1">
-              {conversation.creator.name} is typing...
+              {typingLabel ?? `${conversation.creator.name} is typing...`}
             </span>
           </div>
         )}

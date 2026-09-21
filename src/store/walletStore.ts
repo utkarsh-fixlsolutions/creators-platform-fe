@@ -19,7 +19,7 @@ interface WalletState {
   lifetimeEarned: number;
   transactions: LedgerTransaction[];
   topUpCoins: (coins: number) => void;
-  deductCoins: (coins: number, reason: string) => boolean;
+  deductCoins: (coins: number, reason?: string) => boolean;
   requestPayout: (credits: number) => boolean;
 }
 
@@ -68,7 +68,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
         ...state.transactions,
       ],
     })),
-  deductCoins: (coins, reason) => {
+  deductCoins: (coins, reason = 'Purchase') => {
     const current = get().coinsBalance;
     if (current < coins) return false;
     set((state) => ({
