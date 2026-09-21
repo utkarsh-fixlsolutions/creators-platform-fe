@@ -10,6 +10,7 @@ import { BecomeCreatorModal } from "./components/creator/BecomeCreatorModal";
 import { ExplorePage } from "./pages/fan/ExplorePage";
 import { SettingsPage } from "./pages/fan/SettingsPage";
 import { CreatorProfilePage } from "./pages/fan/CreatorProfilePage";
+import { WalletPage } from "./pages/fan/WalletPage";
 
 export default function App() {
   return (
@@ -51,6 +52,10 @@ export default function App() {
         {/* Fan Settings Page */}
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/app/settings" element={<SettingsPage />} />
+
+        {/* Fan Wallet Page */}
+        <Route path="/wallet" element={<WalletPage />} />
+        <Route path="/app/wallet" element={<WalletPage />} />
 
         {/* Dedicated Creator Profile Screen */}
         <Route path="/app/:handle" element={<CreatorProfilePage />} />

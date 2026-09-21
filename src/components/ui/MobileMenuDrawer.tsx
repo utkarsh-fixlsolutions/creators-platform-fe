@@ -50,7 +50,7 @@ const PRIMARY_ITEMS: DrawerMenuItem[] = [
   { id: "subscriptions", label: "My Subscriptions", icon: Crown, path: "/subscriptions", badge: 2 },
   { id: "live", label: "Live Creators", icon: Eye, path: "/live", live: true },
   { id: "creators", label: "Creators Directory", icon: Compass, path: "/explore" },
-  { id: "wallet", label: "Wallet & Top Up", icon: Wallet, action: "wallet" },
+  { id: "wallet", label: "Wallet & Top Up", icon: Wallet, path: "/wallet" },
 ];
 
 const FANS_ITEMS: DrawerMenuItem[] = [
@@ -198,7 +198,8 @@ export function MobileMenuDrawer({
             {/* Quick Wallet Balance Pill */}
             <div
               onClick={() => {
-                onNotify?.(`Wallet Balance: ${coinsBalance.toLocaleString()} Coins — Top-up available`);
+                onClose();
+                navigate('/wallet');
               }}
               title="Coins Balance & Top Up"
               className="flex items-center gap-1.5 rounded-full border border-[#e9d6ab] bg-gold-soft px-3 py-1.5 text-gold-deep cursor-pointer active:scale-95 transition-transform select-none"

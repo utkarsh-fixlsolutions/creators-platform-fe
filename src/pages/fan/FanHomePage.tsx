@@ -137,6 +137,8 @@ export function FanHomePage() {
         navigate("/explore");
       } else if (item.id === "settings" || item.id === "profile") {
         navigate("/settings");
+      } else if (item.id === "wallet") {
+        navigate("/wallet");
       } else if (item.id === "home") {
       } else if (item.tab) {
         changeTab(item.tab);
@@ -248,7 +250,7 @@ export function FanHomePage() {
               <FeedHeader
                 onMessagesClick={() => navigate("/messages")}
                 onNotificationsClick={() => navigate("/notifications")}
-                onWalletClick={() => notify(`Wallet Balance: ${useWalletStore.getState().coinsBalance.toLocaleString()} Coins`)}
+                onWalletClick={() => navigate("/wallet")}
               />
             </div>
 

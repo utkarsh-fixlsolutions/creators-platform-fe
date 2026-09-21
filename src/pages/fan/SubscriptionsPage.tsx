@@ -94,8 +94,10 @@ export function SubscriptionsPage() {
       // already here
     } else if (item.id === "explore" || item.id === "creators") {
       navigate("/explore");
-    } else if (item.id === "settings") {
+    } else if (item.id === "settings" || item.id === "profile") {
       navigate("/settings");
+    } else if (item.id === "wallet") {
+      navigate("/wallet");
     } else if (item.tab) {
       navigate("/app");
     } else {
