@@ -14,7 +14,7 @@ import {
   MessageCircle,
   Settings,
   Share,
-  UserRoundPlus,
+  Sparkles,
   Vault,
   Wallet,
   Coins,
@@ -49,15 +49,12 @@ const PRIMARY_ITEMS: DrawerMenuItem[] = [
   { id: "notifications", label: "Notifications", icon: Bell, path: "/notifications" },
   { id: "subscriptions", label: "My Subscriptions", icon: Crown, path: "/subscriptions", badge: 2 },
   { id: "live", label: "Live Creators", icon: Eye, path: "/live", live: true },
-  { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
   { id: "creators", label: "Creators Directory", icon: Compass, path: "/explore" },
-  { id: "vault", label: "Vault Archive", icon: Vault },
-  { id: "wallet", label: "Wallet & Top Up", icon: Wallet, action: "wallet" },
+  { id: "wallet", label: "Wallet & Top Up", icon: Wallet, path: "/wallet" },
 ];
 
 const FANS_ITEMS: DrawerMenuItem[] = [
   { id: "payments", label: "Subscription Payments", icon: CreditCard },
-  { id: "become-creator", label: "Become a Creator", icon: UserRoundPlus, action: "creator" },
   { id: "referral", label: "Invite & Referral", icon: Share },
 ];
 
@@ -201,7 +198,8 @@ export function MobileMenuDrawer({
             {/* Quick Wallet Balance Pill */}
             <div
               onClick={() => {
-                onNotify?.(`Wallet Balance: ${coinsBalance.toLocaleString()} Coins — Top-up available`);
+                onClose();
+                navigate('/wallet');
               }}
               title="Coins Balance & Top Up"
               className="flex items-center gap-1.5 rounded-full border border-[#e9d6ab] bg-gold-soft px-3 py-1.5 text-gold-deep cursor-pointer active:scale-95 transition-transform select-none"
@@ -212,7 +210,7 @@ export function MobileMenuDrawer({
           </div>
 
         {/* Scrollable Navigation Groups */}
-        <div className="flex-1 overflow-y-auto p-3 space-y-4 quiet-scroll">
+        <div className="flex-1 overflow-y-auto p-3 pb-36 space-y-4 quiet-scroll">
           {/* Group 1: Primary Navigation */}
           <div>
             <div className="mb-1.5 px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-ink/40">
@@ -235,6 +233,31 @@ export function MobileMenuDrawer({
               Account &amp; System
             </div>
             {renderGroup(SYSTEM_ITEMS)}
+          </div>
+
+          {/* Prominent Become a Creator Luxury Card CTA */}
+          <div className="pt-2 px-1">
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                useCreatorStore.getState().openModal();
+              }}
+              className="group relative flex w-full items-center gap-2.5 rounded-2xl bg-ink p-3 text-left text-white shadow-card transition-all duration-300 hover:bg-black hover:shadow-ink active:scale-[0.98] cursor-pointer"
+            >
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-white/15 text-white transition-transform group-hover:scale-105">
+                <Sparkles className="h-4 w-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <span className="block text-[13px] font-bold leading-tight tracking-[-0.01em]">
+                  Become a Creator
+                </span>
+                <span className="block truncate text-[11px] font-medium text-white/60">
+                  Keep 90% of earnings
+                </span>
+              </div>
+              <ChevronRight className="h-4 w-4 text-white/40 transition-transform group-hover:translate-x-0.5 group-hover:text-white" />
+            </button>
           </div>
         </div>
       </div>

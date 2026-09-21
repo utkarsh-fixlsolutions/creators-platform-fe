@@ -11,9 +11,12 @@ import { MobileBottomNav, MobileTopBar } from "../../components/MobileChrome";
 import { RightRail } from "../../components/RightRail";
 import { Toast } from "../../components/Toast";
 import { useLiveStore, type LiveFilterTab } from "../../store/liveStore";
+import { useSidebarStore } from "../../store/sidebarStore";
+import { cn } from "../../utils/cn";
 
 export function LiveNowPage() {
   const navigate = useNavigate();
+  const isSidebarCollapsed = useSidebarStore((s) => s.isCollapsed);
   const [toast, setToast] = useState<string | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -64,6 +67,10 @@ export function LiveNowPage() {
       navigate("/subscriptions");
     } else if (item.id === "explore" || item.id === "creators") {
       navigate("/explore");
+    } else if (item.id === "settings" || item.id === "profile") {
+      navigate("/settings");
+    } else if (item.id === "wallet") {
+      navigate("/wallet");
     } else if (item.tab) {
       navigate("/app");
     } else {
@@ -81,7 +88,7 @@ export function LiveNowPage() {
     } else if (item.id === "subscriptions") {
       navigate("/subscriptions");
     } else if (item.id === "profile") {
-      notify("Fan Profile & Settings");
+      navigate("/settings");
     }
   };
 
@@ -98,7 +105,14 @@ export function LiveNowPage() {
         onNotificationsClick={() => navigate("/notifications")}
       />
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]">
+      <div
+        className={cn(
+          "w-full grid grid-cols-1 md:grid-cols-[80px_minmax(0,1fr)] transition-all duration-300 ease-in-out",
+          isSidebarCollapsed
+            ? "lg:grid-cols-[80px_minmax(0,1fr)] xl:grid-cols-[80px_minmax(0,1fr)_356px] 2xl:grid-cols-[80px_minmax(0,1fr)_380px]"
+            : "lg:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_356px] 2xl:grid-cols-[272px_minmax(0,1fr)_380px]",
+        )}
+      >
         {/* Left Sidebar */}
         <Sidebar
           activeTab="live"
@@ -113,7 +127,7 @@ export function LiveNowPage() {
             {/* Desktop Page Title */}
             <div className="hidden md:flex items-center justify-between pt-6 pb-2">
               <div className="flex items-center gap-3">
-                <span className="font-display text-[30px] leading-none text-ink">
+                <span className="font-bold text-[26px] tracking-tight text-ink">
                   Live now
                 </span>
                 <span className="flex items-center gap-1.5 rounded-full bg-rose px-2.5 py-0.5 text-[11px] font-extrabold tracking-wide text-white">
@@ -160,7 +174,7 @@ export function LiveNowPage() {
                 /* Empty State */
                 <Reveal>
                   <div className="my-6 rounded-[24px] border border-dashed border-line-strong bg-surface p-8 text-center shadow-card">
-                    <h3 className="font-display text-[20px] text-ink">
+                    <h3 className="font-bold text-[19px] tracking-tight text-ink">
                       No one&apos;s live in this filter
                     </h3>
                     <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted">

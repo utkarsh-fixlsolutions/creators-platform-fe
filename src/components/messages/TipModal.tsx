@@ -52,7 +52,7 @@ export default function TipModal({ creator, balance, onClose, onSendTip }: Props
             </div>
           </div>
 
-          <h3 className="font-display text-xl font-bold text-ink">
+          <h3 className="font-bold text-[18px] tracking-tight text-ink">
             Send a Tip to {creator.name}
           </h3>
           <p className="text-xs text-muted mt-0.5">

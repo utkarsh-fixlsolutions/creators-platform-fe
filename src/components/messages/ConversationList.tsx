@@ -63,7 +63,7 @@ export default function ConversationList({ conversations, activeId, onSelect }: 
       <div className="border-b border-line px-5 py-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <h1 className="font-display text-2xl font-bold tracking-tight text-ink">
+            <h1 className="font-bold text-[22px] tracking-tight text-ink">
               Direct Messages
             </h1>
             {totalUnread > 0 && (

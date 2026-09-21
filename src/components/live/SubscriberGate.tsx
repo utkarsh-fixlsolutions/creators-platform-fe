@@ -74,7 +74,7 @@ export function SubscriberGate({
         <span className="inline-grid h-16 w-16 place-items-center rounded-full border border-white/30 bg-white/14 text-white backdrop-blur-md shadow-card">
           <Lock className="h-7 w-7 stroke-[2]" />
         </span>
-        <h2 className="font-display text-[27px] leading-tight text-white mt-4">
+        <h2 className="font-bold text-[24px] leading-tight tracking-tight text-white mt-4">
           Subscribers only
         </h2>
         <p className="mt-2 text-[13.5px] leading-relaxed text-white/80 text-pretty">

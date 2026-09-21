@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Lock, Play, Pause, Gem, Unlock, Sparkles, Video } from 'lucide-react';
 import type { Conversation, Message } from '../../data/messagesData';
 import { cn } from '../../utils/cn';
@@ -8,6 +8,10 @@ interface Props {
   typing: boolean;
   onUnlock: (messageId: string) => void;
   justUnlockedId: string | null;
+  /** Whose messages render right-aligned as "mine" — defaults to the fan's view. */
+  viewerRole?: 'fan' | 'creator';
+  typingLabel?: string;
+  noticeText?: ReactNode;
 }
 
 /* ---------- Voice Memo Player Component ---------- */
@@ -196,6 +200,9 @@ export default function ChatStream({
   typing,
   onUnlock,
   justUnlockedId,
+  viewerRole = 'fan',
+  typingLabel,
+  noticeText,
 }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -204,96 +211,100 @@ export default function ChatStream({
   }, [conversation.messages, typing]);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-paper px-4 py-6 sm:px-6 space-y-4">
-      {/* Encryption & Safety Notice */}
-      <div className="mx-auto max-w-sm rounded-2xl border border-line bg-surface/70 px-4 py-2.5 text-center text-[11.5px] text-muted shadow-sm backdrop-blur-sm">
-        🔒 Direct message stream with <span className="font-semibold text-ink">{conversation.creator.name}</span>. Tips and drops support the creator directly.
-      </div>
+    <div className="flex-1 overflow-y-auto bg-paper px-4 py-6 sm:px-6 no-scrollbar">
+      <div className="mx-auto max-w-3xl w-full space-y-4">
+        {/* Encryption & Safety Notice */}
+        <div className="mx-auto max-w-sm rounded-2xl border border-line bg-surface/70 px-4 py-2 text-center text-[11px] text-muted shadow-xs backdrop-blur-sm">
+          {noticeText ?? (
+            <>
+              🔒 Direct message stream with <span className="font-semibold text-ink">{conversation.creator.name}</span>. Tips and drops support the creator directly.
+            </>
+          )}
+        </div>
 
-      {/* Message Timeline */}
-      {conversation.messages.map((m) => {
-        const mine = m.sender === 'fan';
+        {/* Message Timeline */}
+        {conversation.messages.map((m) => {
+          const mine = m.sender === viewerRole;
 
-        return (
-          <div
-            key={m.id}
-            className={cn('flex flex-col', mine ? 'items-end' : 'items-start')}
-          >
-            {/* PPV Card */}
-            {m.type === 'ppv' && (
-              <PPVCard
-                m={m}
-                onUnlock={() => onUnlock(m.id)}
-                celebrate={justUnlockedId === m.id}
-              />
-            )}
-
-            {/* Voice Memo */}
-            {m.type === 'voice' && <VoiceMemo m={m} mine={mine} />}
-
-            {/* Photo Attachment */}
-            {m.type === 'image' && (
-              <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
-                <img
-                  src={m.mediaUrl}
-                  alt="Attachment"
-                  className="max-h-72 max-w-[280px] sm:max-w-xs object-cover"
+          return (
+            <div
+              key={m.id}
+              className={cn('flex flex-col', mine ? 'items-end' : 'items-start')}
+            >
+              {/* PPV Card */}
+              {m.type === 'ppv' && (
+                <PPVCard
+                  m={m}
+                  onUnlock={() => onUnlock(m.id)}
+                  celebrate={justUnlockedId === m.id}
                 />
-              </div>
-            )}
+              )}
 
-            {/* Coin Tip Event */}
-            {m.type === 'tip' && (
-              <div className="flex items-center gap-2.5 rounded-2xl border border-amber-200/80 bg-gradient-to-r from-amber-50 to-yellow-50/80 px-4 py-2.5 shadow-sm text-ink">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400/20 text-gold">
-                  <Gem className="h-5 w-5" />
+              {/* Voice Memo */}
+              {m.type === 'voice' && <VoiceMemo m={m} mine={mine} />}
+
+              {/* Photo Attachment */}
+              {m.type === 'image' && (
+                <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+                  <img
+                    src={m.mediaUrl}
+                    alt="Attachment"
+                    className="max-h-72 max-w-[280px] sm:max-w-xs object-cover"
+                  />
                 </div>
-                <div>
-                  <p className="text-[13px] font-bold text-amber-900">
-                    💎 Sent a {m.tipAmount} coin tip
-                  </p>
-                  {m.text && <p className="text-xs text-amber-800/90 mt-0.5">{m.text}</p>}
+              )}
+
+              {/* Coin Tip Event */}
+              {m.type === 'tip' && (
+                <div className="flex items-center gap-2.5 rounded-2xl border border-amber-200/80 bg-gradient-to-r from-amber-50 to-yellow-50/80 px-4 py-2.5 shadow-sm text-ink">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-400/20 text-gold">
+                    <Gem className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-bold text-amber-900">
+                      💎 Sent a {m.tipAmount} coin tip
+                    </p>
+                    {m.text && <p className="text-xs text-amber-800/90 mt-0.5">{m.text}</p>}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Standard Text Bubble */}
-            {m.type === 'text' && (
-              <div
-                className={cn(
-                  'max-w-[82%] sm:max-w-[70%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed shadow-sm break-words',
-                  mine
-                    ? 'rounded-br-sm bg-brand text-white font-medium'
-                    : 'rounded-bl-sm bg-surface border border-line text-ink'
-                )}
-              >
-                {m.text}
-              </div>
-            )}
+              {/* Standard Text Bubble */}
+              {m.type === 'text' && (
+                <div
+                  className={cn(
+                    'max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed shadow-xs break-words',
+                    mine
+                      ? 'rounded-br-sm bg-brand text-white font-medium'
+                      : 'rounded-bl-sm bg-surface border border-line text-ink'
+                  )}
+                >
+                  {m.text}
+                </div>
+              )}
 
-            {/* Timestamp */}
-            <span className="mt-1 px-1 text-[10.5px] font-medium text-muted">
-              {m.time}
+              {/* Timestamp */}
+              <span className="mt-1 px-1 text-[10px] font-medium text-muted">
+                {m.time}
+              </span>
+            </div>
+          );
+        })}
+
+        {/* Typing indicator */}
+        {typing && (
+          <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface px-4 py-2.5 shadow-xs w-fit">
+            <span className="h-2 w-2 rounded-full bg-muted animate-bounce" />
+            <span className="h-2 w-2 rounded-full bg-muted animate-bounce [animation-delay:0.2s]" />
+            <span className="h-2 w-2 rounded-full bg-muted animate-bounce [animation-delay:0.4s]" />
+            <span className="text-xs text-muted font-medium ml-1">
+              {typingLabel ?? `${conversation.creator.name} is typing...`}
             </span>
           </div>
-        );
-      })}
+        )}
 
-      {/* Typing Indicator */}
-      {typing && (
-        <div className="flex items-center gap-2 text-left">
-          <div className="flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-2 shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand animate-bounce" style={{ animationDelay: '0ms' }} />
-            <span className="h-1.5 w-1.5 rounded-full bg-brand animate-bounce" style={{ animationDelay: '150ms' }} />
-            <span className="h-1.5 w-1.5 rounded-full bg-brand animate-bounce" style={{ animationDelay: '300ms' }} />
-          </div>
-          <span className="text-[11.5px] text-muted italic">
-            {conversation.creator.name} is typing...
-          </span>
-        </div>
-      )}
-
-      <div ref={bottomRef} />
+        <div ref={bottomRef} />
+      </div>
     </div>
   );
 }
